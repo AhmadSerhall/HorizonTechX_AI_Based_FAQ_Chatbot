@@ -233,3 +233,144 @@ An expected result is `download course video mobile phone`.
 ### What the next phase will do
 
 Phase 3 will create `chatbot.py`. It will load `data/faqs.json`, preprocess every FAQ question with `preprocess_text()`, turn the processed questions into TF-IDF vectors, compare a processed user query with cosine similarity, and select the best matching FAQ. It will not build the full Streamlit chat UI yet.
+
+## Phase 3 — FAQ Matching Engine
+
+### What we implemented
+
+We created `chatbot.py`, the part of the project that searches the FAQ dataset. It loads the 50 JSON FAQ records, sends every FAQ question through the existing `preprocess_text()` function, converts the processed questions into TF-IDF vectors, and compares a new user query with every FAQ using cosine similarity.
+
+The main matching function, `find_best_match()`, returns a dictionary with the matched FAQ question, answer, category, and similarity score. It does not decide whether the score is good enough yet. That important safety decision belongs to Phase 4.
+
+### Files created or modified
+
+- `chatbot.py` was created for JSON loading, TF-IDF vectorization, cosine similarity, and selecting the highest-scoring FAQ.
+- `explication.md` was updated with this Phase 3 section.
+
+`preprocess.py` was reused without copying or changing its NLP logic. `data/faqs.json` was read without modification. `app.py` remains the original Streamlit starter because the chat interface is Phase 5 work.
+
+### The functions in `chatbot.py`
+
+- `load_faqs()` opens `data/faqs.json` and returns the FAQ list.
+- `build_faq_vectorizer(faqs)` extracts FAQ questions, preprocesses them with the imported `preprocess_text()`, creates a TF-IDF vectorizer, and fits it to all processed FAQ questions.
+- `find_best_match(user_query, faqs, vectorizer, faq_vectors)` preprocesses one user query, compares it against the FAQ vectors, and returns details about the best match.
+- `print_match_result(user_query, result)` prints an understandable result for manual testing. It is not the future Streamlit interface.
+
+### What TF-IDF means
+
+**TF-IDF** is short for **Term Frequency–Inverse Document Frequency**. It is a way to turn text into numbers while giving more attention to words that help distinguish one FAQ from another.
+
+**TF, or Term Frequency**, asks: “How much does this word appear in this particular question?” A word that appears in a question is part of that question's representation. In larger documents, repeating a word can increase its TF importance.
+
+**IDF, or Inverse Document Frequency**, asks: “How common is this word across all FAQ questions?” A word appearing in almost every question is less helpful for telling questions apart. A more distinctive word, such as `certificate`, `receipt`, or `browser`, is generally more useful for matching because it appears in fewer FAQ questions.
+
+Together, TF-IDF gives each word a numeric weight. The result is not a human-language meaning; it is a useful numeric description based on the words present in the dataset.
+
+### What a vector is in this project
+
+A **vector** is an ordered list of numbers. After the vectorizer reads all 50 processed FAQ questions, it builds a vocabulary of 93 distinct useful words. Each question then becomes a vector with 93 positions—one position per vocabulary word.
+
+For a simple imaginary vocabulary such as `[certificate, course, password]`, the processed question `download certificate` might become a list like `[0.8, 0.0, 0.0]`. The real project has more words and uses TF-IDF weights, but the idea is the same: every number represents the importance of one vocabulary word in that question. This lets the computer compare questions numerically.
+
+### What `TfidfVectorizer` does
+
+`TfidfVectorizer` is a scikit-learn class. We create one object with `TfidfVectorizer()`. It learns the FAQ vocabulary, calculates TF-IDF weights, and creates a matrix of FAQ vectors.
+
+The object is named `vectorizer` in the code. The resulting `faq_vectors` value is a matrix: a table-like collection where each row represents one FAQ question and each column represents one vocabulary word. During validation, it had the shape `(50, 93)`, meaning 50 FAQ-vector rows and 93 word-feature columns.
+
+### What “fit” and “transform” mean
+
+**Fit** means learning from a collection of data. Here, `vectorizer.fit_transform(processed_questions)` learns the vocabulary and IDF weights from all processed FAQ questions. It also immediately creates their vectors. This combined operation is why it is called `fit_transform`.
+
+**Transform** means applying what has already been learned to new text. `vectorizer.transform([processed_query])` converts a user query into a vector using the existing FAQ vocabulary and existing IDF weights. It does not learn a new vocabulary from the user query.
+
+The FAQ questions and the user query must use the **same fitted vectorizer**. If we fitted a separate vectorizer for the query, its columns could refer to different words or use different weights. The vectors would no longer have a shared meaning, so comparing them would be invalid.
+
+### Cosine similarity and selecting the best FAQ
+
+`cosine_similarity()` compares the direction of two vectors. In this project, it estimates how similar the useful word content of a user query is to the useful word content of each FAQ question.
+
+- A score closer to `1` means the vectors point in very similar directions, so the text is more similar.
+- A score closer to `0` means there is little useful word overlap, so the text is less similar.
+
+The function returns one score for each of the 50 FAQ questions. `similarity_scores.argmax()` finds the index of the largest score. Python lists use the same zero-based ordering, so that index points directly to the corresponding FAQ dictionary. The code then takes the `question`, `answer`, and `category` from that dictionary.
+
+### Important imports and Python concepts
+
+- `import json` gives Python the tools to read the FAQ JSON file.
+- `from pathlib import Path` supplies `Path`, which creates a reliable path to `data/faqs.json` relative to `chatbot.py`. This works even when the command is run from a different folder.
+- `from preprocess import preprocess_text` imports the existing Phase 2 function rather than duplicating NLP code. Both FAQs and user queries therefore receive exactly the same preprocessing.
+- `from sklearn.feature_extraction.text import TfidfVectorizer` imports the scikit-learn vectorizer.
+- `from sklearn.metrics.pairwise import cosine_similarity` imports the similarity function.
+- `with open(...) as file:` opens the JSON file safely and closes it automatically after Python finishes reading it.
+- A list comprehension, `[faq["question"] for faq in faqs]`, collects the `question` value from every FAQ dictionary.
+- `float(...)` changes the score into a regular Python decimal number, which is simpler to print and later display in Streamlit.
+- `if __name__ == "__main__":` runs the three manual test queries only when `chatbot.py` is run directly. Importing its functions later will not run those demonstrations automatically.
+
+### Complete Phase 3 data flow
+
+```text
+Raw FAQ questions from data/faqs.json
+    ↓
+preprocess_text()
+    ↓
+Processed FAQ questions
+    ↓
+TfidfVectorizer.fit_transform()
+    ↓
+FAQ vectors
+
+User query
+    ↓
+preprocess_text()
+    ↓
+TfidfVectorizer.transform()
+    ↓
+Query vector
+    ↓
+cosine_similarity() against all FAQ vectors
+    ↓
+50 similarity scores
+    ↓
+Highest score and its index
+    ↓
+Corresponding FAQ question, answer, and category
+```
+
+### Actual Phase 3 tests
+
+Running `python chatbot.py` loaded and vectorized all 50 FAQ questions. The fitted vocabulary contained 93 word features.
+
+| User query | Best matched FAQ | Category | Score |
+| --- | --- | --- | --- |
+| `How do I download my certificate?` | `How do I download my certificate?` | Certificates | 1.00 |
+| `Can I study using my phone?` | `Can I learn from my mobile phone?` | Courses | 0.60 |
+| `certificate after course` | `How do I download my certificate?` | Certificates | 0.57 |
+
+The first test gets `1.00` because, after preprocessing, its wording is the same as the FAQ question. The second uses different wording—`study` instead of `learn` and `phone` instead of `mobile phone`—but it still shares the important word `phone`, so the mobile-learning FAQ is its best match. The third shows that TF-IDF uses the word weights and available overlap; it selected the certificate-download FAQ as the highest-scoring certificate-related question.
+
+### How to test Phase 3 manually
+
+Run the matching demonstration from the project folder:
+
+```powershell
+.\venv\Scripts\python.exe chatbot.py
+```
+
+You should see `Loaded and vectorized 50 FAQ questions.`, the vocabulary size, and details for all three test queries.
+
+To test the reusable matching function yourself:
+
+```powershell
+.\venv\Scripts\python.exe -c "from chatbot import load_faqs, build_faq_vectorizer, find_best_match; faqs = load_faqs(); vectorizer, faq_vectors, _ = build_faq_vectorizer(faqs); print(find_best_match('How can I reset my password?', faqs, vectorizer, faq_vectors))"
+```
+
+### Current limitation: every query receives a match
+
+At this stage, the program always returns the FAQ with the largest score, even if every score is poor. For example, an unrelated question might still be paired with the least-unrelated FAQ. A largest score only means “best among this dataset”; it does not automatically mean “good enough.”
+
+Phase 4 will add a confidence threshold. When the best score is below that threshold, the chatbot will return a helpful fallback response instead of a misleading FAQ answer. Phase 4 will also handle empty queries cleanly.
+
+### What the next phase will do
+
+Phase 4 will improve the response logic around this matching engine. It will add the confidence threshold, fallback response, empty-query handling, a clean response structure, and tests for exact, paraphrased, short, unrelated, and empty questions. It will not build the Streamlit UI yet.
