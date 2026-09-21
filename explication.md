@@ -95,3 +95,141 @@ Right now the first two parts exist. The loading, searching, and response steps 
 ### What the next phase will do
 
 Phase 2 will create `preprocess.py` and use NLTK to prepare text for matching. It will demonstrate lowercase conversion, tokenization, punctuation removal, stopword removal, and lemmatization with a step-by-step example sentence. No full Streamlit chat interface will be built yet.
+
+## Phase 2 — NLP Preprocessing
+
+### What we implemented
+
+We created `preprocess.py`, a reusable Python module that converts a raw English question into a simpler, consistent form. Its main function is `preprocess_text(text)`. It applies this pipeline:
+
+```text
+raw text → lowercase → tokens → alphabetic tokens → no stopwords → lemmas → processed text
+```
+
+The module also contains two learning helpers. `get_preprocessing_steps(text)` returns each intermediate stage in a dictionary, while `print_preprocessing_steps(text)` prints those stages clearly. These helpers make the process visible while we are learning and testing. In Phase 3, the matching engine will only need `preprocess_text()`.
+
+No TF-IDF vectorizer, cosine similarity calculation, FAQ loading code, matching logic, or chatbot interface was added in this phase.
+
+### Why NLP preprocessing matters
+
+**Natural Language Processing (NLP)** is the area of programming that helps computers work with human language. People can ask the same question in several ways: “How do I download certificates?”, “download my certificate”, or “Where is my certificate download?” A computer needs a more consistent representation before it can compare those questions.
+
+Raw text contains differences that often do not change the meaning for our FAQ matcher: uppercase letters, punctuation, frequent helper words, and plural word forms. Preprocessing reduces some of that noise. It does not make the chatbot understand language like a person; it prepares useful words for the TF-IDF and cosine-similarity method we will add later.
+
+### Files created or modified
+
+- `preprocess.py` was created. It owns NLTK setup and reusable text preprocessing.
+- `explication.md` was updated with this Phase 2 section.
+
+`data/faqs.json` was reviewed but not changed. Its `question` strings are compatible with `preprocess_text()`. `app.py` remains the original Streamlit starter, and `chatbot.py` does not exist yet because it belongs to Phase 3.
+
+### NLTK and its required resources
+
+**NLTK** stands for Natural Language Toolkit. It is a Python library with tools and language data that are useful when learning NLP.
+
+Installing the `nltk` Python package is not enough for every feature. Tokenization, English stopwords, and WordNet lemmatization also use separate data packages. `ensure_nltk_resources()` checks whether each one exists and quietly downloads it only if it is missing:
+
+- `punkt` and `punkt_tab`: language data used by NLTK tokenization in the installed NLTK version.
+- `stopwords`: the English stopword list.
+- `wordnet`: the lexical database used by the lemmatizer.
+- `omw-1.4`: extra WordNet data used alongside WordNet.
+
+This check happens when `preprocess.py` is imported or run. Normally it is a quick local check after the first download. The first run needs an internet connection if those resources are not already installed.
+
+### What each import does
+
+- `import nltk` gives the file access to NLTK itself, including its resource finder and downloader.
+- `from nltk.corpus import stopwords` imports NLTK's collection of common words.
+- `from nltk.stem import WordNetLemmatizer` imports the lemmatizer class. The program creates one reusable object named `LEMMATIZER` from it.
+- `from nltk.tokenize import word_tokenize` imports the function that splits a sentence into tokens.
+
+An **import** lets one Python file use code written in another package. The `from ... import ...` form brings in only the named tool, so we can write `word_tokenize(...)` instead of a longer package path.
+
+### How `preprocess_text()` works
+
+`preprocess_text(text)` calls `get_preprocessing_steps(text)` and joins its final list of words with spaces. The result is a string, which is convenient for the TF-IDF vectorizer in Phase 3.
+
+Inside the pipeline:
+
+1. It checks that `text` is a string. A **string** is text in Python. If a number, list, or other type is passed by mistake, Python raises a clear `TypeError` instead of producing a confusing result.
+2. `text.lower()` makes every letter lowercase. Therefore `Course`, `COURSE`, and `course` are treated as the same word.
+3. `word_tokenize()` performs **tokenization**: it splits text into small pieces called **tokens**. Words and punctuation become separate tokens. A computer can filter and compare a list of tokens more easily than one long sentence.
+4. The list comprehension `token for token in tokens if token.isalpha()` keeps only alphabetic tokens. It removes punctuation such as `?` and `,`, plus numbers or symbols. `isalpha()` is a string method that is true only for letters.
+5. Another list comprehension removes English **stopwords**. Stopwords are very common words that usually add little topic information when comparing FAQ questions, such as `the`, `is`, `and`, `my`, `do`, and `can`.
+6. `LEMMATIZER.lemmatize(token)` changes words to a basic dictionary form called a **lemma**. For example, `courses` becomes `course`, `passwords` becomes `password`, and `learners` becomes `learner`. This simple beginner-friendly use focuses especially on common noun forms; it does not yet add the extra complexity of part-of-speech tagging.
+7. `" ".join(...)` combines the final word list back into one space-separated processed string.
+
+### A complete transformation example
+
+When the module is run, its detailed example is:
+
+```text
+Original sentence: How do I reset my passwords for the courses?
+↓
+Lowercase: how do i reset my passwords for the courses?
+↓
+Tokenization: ['how', 'do', 'i', 'reset', 'my', 'passwords', 'for', 'the', 'courses', '?']
+↓
+Remove punctuation/non-alphabetic tokens: ['how', 'do', 'i', 'reset', 'my', 'passwords', 'for', 'the', 'courses']
+↓
+Remove stopwords: ['reset', 'passwords', 'courses']
+↓
+Lemmatization: ['reset', 'password', 'course']
+↓
+Final processed result: reset password course
+```
+
+The raw sentence is easy for a person to read. The processed result is shorter and intentionally loses grammar words and punctuation so it keeps the terms that are most useful for later FAQ matching.
+
+### Important Python syntax used
+
+- **Function definitions:** `def function_name(...):` defines reusable instructions. Parameters, such as `text`, are input values supplied when a function is called.
+- **Return:** `return` sends a result back to the code that called the function. `get_preprocessing_steps()` returns a dictionary; `preprocess_text()` returns a string.
+- **Dictionary:** the preprocessing-steps dictionary gives each intermediate result a descriptive key, such as `tokens` or `lemmatized_tokens`.
+- **List comprehension:** `[item for item in items if condition]` is a compact loop that builds a new list. Here it filters unwanted tokens.
+- **Set:** `set(stopwords.words("english"))` stores stopwords in a set. Sets are helpful for fast “is this word present?” checks.
+- **`if __name__ == "__main__"`:** every Python file has a `__name__` value. This condition is true only when this file is run directly with `python preprocess.py`. It lets us run demonstrations without printing them when Phase 3 imports the module.
+- **f-string:** text such as `f"...{value}..."` inserts a variable value into a printable message. The demonstration function uses f-strings to label each stage.
+
+### How data moves through preprocessing
+
+```text
+User or FAQ question (raw string)
+    ↓
+preprocess_text()
+    ↓ lowercase, tokenize, filter, remove stopwords, lemmatize
+Processed string, for example: "reset password course"
+    ↓ Phase 3
+TF-IDF vectorization and cosine-similarity comparison
+```
+
+In Phase 3, the same preprocessing function must be used for both the FAQ questions from `data/faqs.json` and a new user question. That consistency lets the vectorizer compare like with like.
+
+### How to test Phase 2 manually
+
+Run this from the project folder while the virtual environment is available:
+
+```powershell
+.\venv\Scripts\python.exe preprocess.py
+```
+
+The first run may download the missing NLTK resources. You should then see the detailed transformation and three additional FAQ-related examples.
+
+You can also test the primary function directly:
+
+```powershell
+.\venv\Scripts\python.exe -c "from preprocess import preprocess_text; print(preprocess_text('Can I download course videos on my mobile phone?'))"
+```
+
+An expected result is `download course video mobile phone`.
+
+### Common errors you might encounter
+
+- **`LookupError` mentioning an NLTK resource:** make sure you have an internet connection for the first run, then run `preprocess.py` again. The resource checker should download the needed data automatically.
+- **`ModuleNotFoundError: No module named 'nltk'`:** use the project virtual environment, or install the dependencies listed in `requirements.txt` into the environment you are using.
+- **`TypeError: text must be a string`:** pass text in quotation marks, not a number, dictionary, or list.
+- **An empty result for a very short question:** a question made entirely of stopwords, such as `"How do I?"`, has no useful topic words after filtering. Phase 4 will handle empty user input and weak matches safely.
+
+### What the next phase will do
+
+Phase 3 will create `chatbot.py`. It will load `data/faqs.json`, preprocess every FAQ question with `preprocess_text()`, turn the processed questions into TF-IDF vectors, compare a processed user query with cosine similarity, and select the best matching FAQ. It will not build the full Streamlit chat UI yet.
