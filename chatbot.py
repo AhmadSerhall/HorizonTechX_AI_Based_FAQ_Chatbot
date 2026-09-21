@@ -13,9 +13,14 @@ DATA_FILE = Path(__file__).parent / "data" / "faqs.json"
 SIMILARITY_THRESHOLD = 0.50
 
 FALLBACK_RESPONSE = (
-    "I'm sorry, I couldn't find a relevant answer to that question. "
-    "Try asking about accounting, finance, bookkeeping, financial statements, "
-    "business processes, inventory, or ERP concepts."
+    "I couldn't find a close enough FAQ for that question.\n\n"
+    "Try asking about:\n"
+    "• Accounting\n"
+    "• Financial statements\n"
+    "• Finance\n"
+    "• ERP\n"
+    "• Business processes\n"
+    "• VAT fundamentals"
 )
 
 EMPTY_QUERY_RESPONSE = (
@@ -55,6 +60,7 @@ def find_best_match(user_query, faqs, vectorizer, faq_vectors):
         "answer": matched_faq["answer"],
         "category": matched_faq["category"],
         "similarity_score": float(similarity_scores[best_match_index]),
+        "processed_query": processed_query,
     }
 
 
@@ -67,6 +73,7 @@ def get_chatbot_response(user_query):
             "category": None,
             "similarity_score": None,
             "is_confident_match": False,
+            "processed_query": "",
         }
 
     if not preprocess_text(user_query):
@@ -76,6 +83,7 @@ def get_chatbot_response(user_query):
             "category": None,
             "similarity_score": None,
             "is_confident_match": False,
+            "processed_query": "",
         }
 
     best_match = find_best_match(user_query, FAQS, VECTORIZER, FAQ_VECTORS)
@@ -87,6 +95,7 @@ def get_chatbot_response(user_query):
             "category": None,
             "similarity_score": best_match["similarity_score"],
             "is_confident_match": False,
+            "processed_query": best_match["processed_query"],
         }
 
     return {
@@ -95,6 +104,7 @@ def get_chatbot_response(user_query):
         "category": best_match["category"],
         "similarity_score": best_match["similarity_score"],
         "is_confident_match": True,
+        "processed_query": best_match["processed_query"],
     }
 
 
