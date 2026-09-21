@@ -1,0 +1,302 @@
+[
+  {
+    "id": 1,
+    "category": "Getting Started",
+    "question": "What is HorizonTechX Learning Hub?",
+    "answer": "HorizonTechX Learning Hub is an online learning platform where learners can take technology courses, follow structured learning paths, and earn completion certificates."
+  },
+  {
+    "id": 2,
+    "category": "Getting Started",
+    "question": "How do I create an account?",
+    "answer": "Select the Sign Up option on the website, enter your name, email address, and password, then confirm your email address to activate your account."
+  },
+  {
+    "id": 3,
+    "category": "Getting Started",
+    "question": "Is creating an account free?",
+    "answer": "Yes. Creating a HorizonTechX Learning Hub account is free. Some courses are free, while premium courses require payment or a subscription."
+  },
+  {
+    "id": 4,
+    "category": "Getting Started",
+    "question": "Can I use the platform without an account?",
+    "answer": "You can browse course information without an account, but you need an account to enroll in courses, save progress, and receive certificates."
+  },
+  {
+    "id": 5,
+    "category": "Getting Started",
+    "question": "How do I log in to my account?",
+    "answer": "Choose Log In, enter the email address and password connected to your account, and then select the login button."
+  },
+  {
+    "id": 6,
+    "category": "Courses",
+    "question": "What subjects can I learn on the platform?",
+    "answer": "The platform offers technology-focused courses such as Python, web development, data analysis, artificial intelligence, cybersecurity, cloud computing, and career skills."
+  },
+  {
+    "id": 7,
+    "category": "Courses",
+    "question": "How do I enroll in a course?",
+    "answer": "Open the course page and select Enroll. If the course is paid, complete the checkout step before access is added to your dashboard."
+  },
+  {
+    "id": 8,
+    "category": "Courses",
+    "question": "Are there free courses available?",
+    "answer": "Yes. The catalog includes selected free introductory courses. Use the price filter on the course catalog to find them."
+  },
+  {
+    "id": 9,
+    "category": "Courses",
+    "question": "How long do I have access to a course?",
+    "answer": "After enrollment, you have access to the course materials for as long as your subscription is active or for the access period shown on that course page."
+  },
+  {
+    "id": 10,
+    "category": "Courses",
+    "question": "Can I take more than one course at a time?",
+    "answer": "Yes. You can enroll in and study multiple courses at the same time. Your progress for each course is saved separately."
+  },
+  {
+    "id": 11,
+    "category": "Courses",
+    "question": "Can I preview a course before enrolling?",
+    "answer": "Many courses include preview lessons or a course outline. Visit the course page to see the available preview content."
+  },
+  {
+    "id": 12,
+    "category": "Courses",
+    "question": "How do I find beginner-friendly courses?",
+    "answer": "Use the level filter in the course catalog and choose Beginner. Course pages also display the recommended skill level and prerequisites."
+  },
+  {
+    "id": 13,
+    "category": "Courses",
+    "question": "Are there prerequisites for courses?",
+    "answer": "Some intermediate and advanced courses have prerequisites. Each course page lists the skills or previous knowledge that are recommended before starting."
+  },
+  {
+    "id": 14,
+    "category": "Courses",
+    "question": "Can I download course videos?",
+    "answer": "Course videos are available for streaming through the platform. Download availability depends on the specific course and your subscription plan."
+  },
+  {
+    "id": 15,
+    "category": "Courses",
+    "question": "Can I learn from my mobile phone?",
+    "answer": "Yes. The learning platform works in modern mobile browsers, so you can watch lessons and complete many activities from a phone or tablet."
+  },
+  {
+    "id": 16,
+    "category": "Learning Experience",
+    "question": "How is my course progress tracked?",
+    "answer": "Your progress is updated when you complete lessons, quizzes, and course sections while logged in. You can view it from your learning dashboard."
+  },
+  {
+    "id": 17,
+    "category": "Learning Experience",
+    "question": "Can I pause a course and continue later?",
+    "answer": "Yes. Your completed lessons and progress are saved automatically, so you can return to the course later from your dashboard."
+  },
+  {
+    "id": 18,
+    "category": "Learning Experience",
+    "question": "What happens if I fail a quiz?",
+    "answer": "Most course quizzes can be attempted again. Review the lesson material and follow the instructions on the quiz page for another attempt."
+  },
+  {
+    "id": 19,
+    "category": "Learning Experience",
+    "question": "Can I ask questions during a course?",
+    "answer": "Yes. Courses may provide a discussion area where you can ask questions, share ideas, and learn with other students."
+  },
+  {
+    "id": 20,
+    "category": "Learning Experience",
+    "question": "How do I bookmark a lesson?",
+    "answer": "Use the bookmark icon on a lesson page. Your saved lessons appear in the bookmarks area of your dashboard."
+  },
+  {
+    "id": 21,
+    "category": "Learning Experience",
+    "question": "Can I change the playback speed of a video?",
+    "answer": "Yes. Use the video player settings to choose a slower or faster playback speed when that option is available."
+  },
+  {
+    "id": 22,
+    "category": "Learning Experience",
+    "question": "Are course captions available?",
+    "answer": "Many video lessons include captions. Turn them on from the video player controls when captions are available for that lesson."
+  },
+  {
+    "id": 23,
+    "category": "Certificates",
+    "question": "Do I receive a certificate after finishing a course?",
+    "answer": "Eligible courses provide a digital certificate after you complete all required lessons and assessments. The course page states whether a certificate is included."
+  },
+  {
+    "id": 24,
+    "category": "Certificates",
+    "question": "How do I download my certificate?",
+    "answer": "After completing an eligible course, open the course from your dashboard and select the certificate download option."
+  },
+  {
+    "id": 25,
+    "category": "Certificates",
+    "question": "Can I share my certificate on LinkedIn?",
+    "answer": "Yes. You can download your certificate and add it to the Licenses and Certifications section of your LinkedIn profile."
+  },
+  {
+    "id": 26,
+    "category": "Certificates",
+    "question": "Why is my certificate not available yet?",
+    "answer": "Check that every required lesson, quiz, and final assessment is marked complete. If everything is complete, refresh the course page or contact support."
+  },
+  {
+    "id": 27,
+    "category": "Payments and Subscriptions",
+    "question": "What payment methods do you accept?",
+    "answer": "Available payment methods are shown during checkout and may include major credit or debit cards and other secure payment options."
+  },
+  {
+    "id": 28,
+    "category": "Payments and Subscriptions",
+    "question": "How much does a subscription cost?",
+    "answer": "Subscription prices and billing options are displayed on the pricing page. The cost can differ by plan, billing period, and region."
+  },
+  {
+    "id": 29,
+    "category": "Payments and Subscriptions",
+    "question": "Can I cancel my subscription?",
+    "answer": "Yes. Go to Account Settings, open Subscription, and choose Cancel Subscription. Your access continues until the end of the current billing period."
+  },
+  {
+    "id": 30,
+    "category": "Payments and Subscriptions",
+    "question": "Can I get a refund for a course?",
+    "answer": "Refund eligibility depends on the purchase date and the platform refund policy. Review the policy or contact support with your order details."
+  },
+  {
+    "id": 31,
+    "category": "Payments and Subscriptions",
+    "question": "Where can I find my payment receipt?",
+    "answer": "Open Account Settings and visit Billing History to view or download receipts for completed payments."
+  },
+  {
+    "id": 32,
+    "category": "Payments and Subscriptions",
+    "question": "Why was my payment declined?",
+    "answer": "Check your card details, available funds, and bank approval. If the problem continues, try another payment method or contact your payment provider."
+  },
+  {
+    "id": 33,
+    "category": "Account and Security",
+    "question": "I forgot my password. How can I reset it?",
+    "answer": "Select Forgot Password on the login page, enter your email address, and follow the password-reset link sent to your inbox."
+  },
+  {
+    "id": 34,
+    "category": "Account and Security",
+    "question": "How do I change my email address?",
+    "answer": "Go to Account Settings, edit your email address, and save the change. You may need to verify the new email address."
+  },
+  {
+    "id": 35,
+    "category": "Account and Security",
+    "question": "How do I change my password?",
+    "answer": "In Account Settings, open Security, enter your current password, choose a new password, and save the changes."
+  },
+  {
+    "id": 36,
+    "category": "Account and Security",
+    "question": "How can I delete my account?",
+    "answer": "Contact support from the Help section and request account deletion. The support team will explain the verification and data-removal process."
+  },
+  {
+    "id": 37,
+    "category": "Account and Security",
+    "question": "Is my personal information secure?",
+    "answer": "The platform uses security practices to protect account information. Use a strong, unique password and never share your login details with others."
+  },
+  {
+    "id": 38,
+    "category": "Technical Support",
+    "question": "Which browsers are supported?",
+    "answer": "For the best experience, use a current version of Chrome, Edge, Firefox, or Safari with cookies and JavaScript enabled."
+  },
+  {
+    "id": 39,
+    "category": "Technical Support",
+    "question": "Why is a course video not playing?",
+    "answer": "Check your internet connection, refresh the page, and try a supported browser. Disabling browser extensions or clearing cached data can also help."
+  },
+  {
+    "id": 40,
+    "category": "Technical Support",
+    "question": "The website is loading slowly. What should I do?",
+    "answer": "Check your internet connection, refresh the page, close unused browser tabs, and try clearing your browser cache before contacting support."
+  },
+  {
+    "id": 41,
+    "category": "Technical Support",
+    "question": "Why can I not log in?",
+    "answer": "Confirm that you are using the correct email and password. If needed, reset your password and check whether your account activation email was confirmed."
+  },
+  {
+    "id": 42,
+    "category": "Technical Support",
+    "question": "How do I contact technical support?",
+    "answer": "Use the Help or Contact Support option on the platform. Include a clear description of the issue, any error message, and the browser or device you are using."
+  },
+  {
+    "id": 43,
+    "category": "Technical Support",
+    "question": "How do I report a bug?",
+    "answer": "Send a bug report through the support form with steps to reproduce the issue, screenshots if possible, and details about your device and browser."
+  },
+  {
+    "id": 44,
+    "category": "Community and Instructors",
+    "question": "Can I interact with other learners?",
+    "answer": "Yes. Where enabled, course discussion spaces let you exchange questions, answers, and study tips with other learners."
+  },
+  {
+    "id": 45,
+    "category": "Community and Instructors",
+    "question": "Can I contact the course instructor?",
+    "answer": "Some courses allow instructor questions through their discussion area. Availability and response times depend on the course instructor."
+  },
+  {
+    "id": 46,
+    "category": "Community and Instructors",
+    "question": "How do I become a course instructor?",
+    "answer": "Visit the Teach With Us page to review instructor requirements and submit an application or course proposal."
+  },
+  {
+    "id": 47,
+    "category": "Community and Instructors",
+    "question": "Are there rules for course discussions?",
+    "answer": "Yes. Learners should be respectful, stay relevant to the course, avoid sharing private information, and follow the community guidelines."
+  },
+  {
+    "id": 48,
+    "category": "Learning Paths",
+    "question": "What is a learning path?",
+    "answer": "A learning path is an ordered group of courses designed to help you build knowledge in a specific area, such as data science or web development."
+  },
+  {
+    "id": 49,
+    "category": "Learning Paths",
+    "question": "How do I choose the right learning path?",
+    "answer": "Start with your goal and current experience level. Read the learning path description, course sequence, and prerequisites before enrolling."
+  },
+  {
+    "id": 50,
+    "category": "Learning Paths",
+    "question": "Can I complete courses in a learning path in any order?",
+    "answer": "You can usually access the courses after enrolling, but following the suggested order is recommended because later courses may build on earlier topics."
+  }
+]
