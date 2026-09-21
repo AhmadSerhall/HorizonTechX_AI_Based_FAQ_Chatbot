@@ -538,3 +538,156 @@ To call the simple response function directly:
 ### What the next phase will do
 
 Phase 5 will transform `app.py` into the Streamlit chat interface. It will use `st.chat_message`, `st.chat_input`, and `st.session_state` to display conversation history and call `get_chatbot_response()` for each user message. The NLP and response logic will remain in `chatbot.py`.
+
+## Phase 5 — Streamlit Chatbot Interface
+
+### What we implemented
+
+We transformed `app.py` from a two-line starter page into the **HorizonTechX Learning Assistant**. It is a clean Streamlit chat interface with a welcome message, persistent conversation history, native chat bubbles, a sidebar, optional match details for demonstrations, and a Clear conversation button.
+
+Most importantly, the UI does not contain preprocessing, TF-IDF, cosine similarity, threshold, or fallback code. It imports and calls the existing `get_chatbot_response(user_query)` function from `chatbot.py`. This preserves the backend work from Phases 1–4 and keeps each file responsible for one clear job.
+
+### Files modified
+
+- `app.py` was replaced with the Streamlit chatbot interface.
+- `explication.md` was updated with this Phase 5 section.
+
+`chatbot.py`, `preprocess.py`, and `data/faqs.json` were reviewed and not changed. The similarity threshold remains `0.50`.
+
+### What Streamlit is
+
+**Streamlit** is a Python library for building interactive web applications with regular Python code. When you run `streamlit run app.py`, it starts a local web server and opens the app in a browser. Streamlit provides built-in components such as headings, buttons, sidebars, text areas, and chat messages, so we do not need to write HTML, CSS, or JavaScript for this project.
+
+### How `app.py` connects to the backend
+
+At the top of `app.py`, this import connects the interface to the chatbot engine:
+
+```python
+from chatbot import get_chatbot_response
+```
+
+When a user sends a message, `app.py` calls this one function. The function returns the Phase 4 response dictionary. `app.py` takes the `response` text from the dictionary and displays it in an assistant chat bubble. It also saves the complete dictionary as optional message details for the debug mode.
+
+This is a useful separation of responsibilities:
+
+- `app.py`: user interface, chat history, sidebar, and message display.
+- `chatbot.py`: FAQ loading, TF-IDF, cosine similarity, threshold check, and response decision.
+- `preprocess.py`: NLTK text cleaning.
+- `data/faqs.json`: the FAQ knowledge source.
+
+### Native chat components
+
+`st.chat_input()` creates the message box at the bottom of the chat. It waits for the learner to type and submit a question. When a question is submitted, the component returns the text so `app.py` can add it to history and send it to `get_chatbot_response()`.
+
+`st.chat_message("user")` and `st.chat_message("assistant")` create the visual message bubbles. The role tells Streamlit whether the bubble belongs to the learner or the assistant. Each previous message is displayed again every time the script reruns, which makes the app look like an ongoing conversation rather than a single-question form.
+
+### `st.session_state` and conversation history
+
+**Session state** is Streamlit's place to keep data for one user's active browser session. Normally, a Python variable is recreated whenever Streamlit reruns `app.py`. `st.session_state` survives those normal reruns, so it is the right place to store the conversation.
+
+The app uses `st.session_state.messages`, a list of dictionaries. Conceptually it looks like this:
+
+```text
+[
+  {role: assistant, content: welcome message, details: None},
+  {role: user, content: learner question},
+  {role: assistant, content: chatbot answer, details: response dictionary}
+]
+```
+
+On the first visit, the app creates this list with the initial assistant welcome message. On later reruns, it loops through the existing list and draws every saved message. When a learner submits a new question, the app adds both the user message and assistant message to that list. This is why multiple messages remain visible.
+
+### Why Streamlit reruns the script
+
+Streamlit reruns `app.py` from top to bottom whenever the user interacts with a widget, such as submitting chat input, ticking the debug checkbox, or clicking Clear conversation. This is normal Streamlit behavior, not an error.
+
+The code checks whether `"messages"` is already in `st.session_state`. If it is, the existing history is reused instead of being replaced by a new welcome message. This is how the conversation survives reruns.
+
+### Clear conversation
+
+`reset_conversation()` puts the message list back to one assistant welcome message. The sidebar's Clear conversation button calls this function and then uses `st.rerun()` to redraw the page immediately with the reset history. It does not modify the FAQ dataset or any backend NLP data.
+
+### Sidebar and optional match details
+
+The sidebar includes:
+
+- A brief About section.
+- The main FAQ areas that the bot can answer.
+- Three example questions from the actual dataset.
+- A `Show match details` checkbox.
+- The Clear conversation button.
+
+Normal users see only natural answers. When `Show match details` is enabled, each assistant result includes a collapsible **Match details** area.
+
+For an accepted answer, it shows:
+
+- The matched FAQ question.
+- The FAQ category.
+- The **Similarity score**.
+
+For a fallback, it explains that no FAQ passed the threshold and can show the highest similarity score. For empty input, it explains that no match was calculated. The score is deliberately called a “Similarity score,” not a confidence percentage, because cosine similarity is not a probability.
+
+### Performance and caching
+
+No new Streamlit cache decorator was added. `chatbot.py` already creates its FAQ list, fitted vectorizer, and FAQ vectors as module-level values when it is first imported. During ordinary Streamlit reruns, Python reuses the imported module in the existing Streamlit process, so the vectorizer is not rebuilt for each submitted chat message.
+
+This is sufficient for the current 50-FAQ beginner project. If the dataset becomes much larger or is edited while the app is running, we can evaluate `st.cache_resource` in a later improvement phase. Adding it now would duplicate the backend initialization responsibility without a clear need.
+
+### Complete UI-to-backend architecture
+
+```text
+USER
+    ↓
+Streamlit app.py
+    ↓
+get_chatbot_response()
+    ↓
+chatbot.py
+    ↓
+preprocess.py
+    ↓
+TF-IDF + cosine similarity
+    ↓
+threshold check
+    ↓
+response dictionary
+    ↓
+app.py
+    ↓
+CHAT MESSAGE
+```
+
+### Live UI tests performed
+
+The local Streamlit app opened successfully at `http://localhost:8501`. The welcome message, sidebar, chat input, user/assistant bubbles, debug checkbox, match-details panel, and multi-message history were all visible and tested.
+
+| User query | UI result |
+| --- | --- |
+| `How do I download my certificate?` | Displayed the certificate-download answer; debug details showed the matching FAQ, Certificates category, and similarity score `1.00`. |
+| `Can I study using my phone?` | Displayed the relevant mobile-learning answer. |
+| `certificate after course` | Displayed the certificate-related answer. |
+| `How can I reset my password?` | Displayed the password-reset answer. |
+| `What is the weather in Beirut?` | Displayed the friendly fallback response, not an unrelated FAQ. |
+| `Where can I view my receipts?` | Displayed the Billing History / receipt answer. This was a natural variation not used in earlier controlled tests. |
+
+An automated Streamlit interface test also confirmed that submitting a certificate question adds a user and assistant message, and that Clear conversation restores the history to only the welcome message.
+
+### Recorded behavior for later manual tuning
+
+The natural variation `Do you have classes for beginners?` was rejected with a `0.00` score and showed the fallback response. This is a reasonable candidate to discuss during real user testing: it is related to the FAQ “How do I find beginner-friendly courses?” but it uses different wording (`classes` and `beginners`).
+
+No threshold, dataset, preprocessing, or matching change was made in response to this result. Real user testing should help us decide whether changing the data wording, preprocessing, or matching approach is justified.
+
+### How to run and test the UI manually
+
+From the project folder, run:
+
+```powershell
+.\venv\Scripts\streamlit.exe run app.py
+```
+
+Then try the questions from the test table above. Use the sidebar checkbox to inspect optional match details, send several messages to see retained history, and use Clear conversation to return to the welcome message.
+
+### What comes next
+
+The next stage is **real user testing and tuning**. Before any final polish, test a variety of natural questions and note which answers feel useful, weak, or missing. We should use those observations—not assumptions alone—to decide whether any threshold, preprocessing, FAQ-data, or matching improvements are appropriate.
