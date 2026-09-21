@@ -374,3 +374,167 @@ Phase 4 will add a confidence threshold. When the best score is below that thres
 ### What the next phase will do
 
 Phase 4 will improve the response logic around this matching engine. It will add the confidence threshold, fallback response, empty-query handling, a clean response structure, and tests for exact, paraphrased, short, unrelated, and empty questions. It will not build the Streamlit UI yet.
+
+## Phase 4 — Response Logic, Threshold, and Edge Cases
+
+### What we implemented
+
+Phase 3 could find the highest-scoring FAQ, but it always returned an answer—even for an unrelated question. In this phase, we made the matcher behave like a safer chatbot.
+
+`chatbot.py` now contains a configurable `SIMILARITY_THRESHOLD` of `0.50`, friendly fallback and empty-input messages, and a new `get_chatbot_response(user_query)` function. This function returns one consistent dictionary that a future Streamlit interface can use without needing to know about JSON, preprocessing, TF-IDF, or cosine similarity.
+
+No Streamlit UI was added or changed in this phase.
+
+### Files modified
+
+- `chatbot.py` was updated with response logic, threshold checking, fallback handling, empty-input handling, test printing, and a ready-to-call response function.
+- `explication.md` was updated with this Phase 4 section.
+
+`preprocess.py` and `data/faqs.json` were reviewed and preserved. The original Phase 3 functions, including `find_best_match()`, still work and still expose the raw highest score when needed for testing.
+
+### Why the highest score is not always a good match
+
+`find_best_match()` compares a query against every FAQ and chooses the largest score. “Largest” only means it is the best option from the available 50 FAQs. It does **not** mean the answer is relevant.
+
+For example, an unrelated weather question has no useful vocabulary in common with our learning-platform questions. All its scores are `0.00`, but Phase 3 would still select the first FAQ because one score has to be largest. Returning that unrelated answer would be misleading.
+
+### What the similarity threshold does
+
+A **similarity threshold** is a chosen minimum score that a best match must reach before the chatbot is allowed to use its answer.
+
+```text
+best score >= 0.50  → accept the FAQ answer
+best score < 0.50   → return the fallback response
+```
+
+The threshold is kept near the top of `chatbot.py` as `SIMILARITY_THRESHOLD`, so it is easy to find and adjust after future testing with more questions or a larger dataset.
+
+### Why the chosen threshold is 0.50
+
+The value was selected from tests on this actual 50-FAQ dataset, not simply because `0.50` is a common-looking number.
+
+- The useful paraphrase `Can I study using my phone?` scored `0.60`.
+- The useful keyword query `certificate after course` scored `0.57`.
+- A very broad one-word query, `course`, scored `0.45`. It identifies a topic but does not say what the learner needs, so it should not receive a specific FAQ answer.
+- Clearly unrelated questions scored `0.00`.
+
+`0.50` falls between the tested vague query (`0.45`) and the lowest required useful test (`0.57`). It accepts the useful examples and rejects the ambiguous or unrelated examples. It is a starting policy for this dataset, not a permanent universal value. If the FAQs or real user questions change, the threshold should be tested again.
+
+### A similarity score is not a probability
+
+Cosine similarity is a measurement of the relationship between TF-IDF vectors. It is **not** a probability and should not be described as “80% confidence.”
+
+For example, a score of `0.80` means the query vector has strong similarity to the selected FAQ vector under this particular vocabulary and preprocessing pipeline. It does not mean there is an 80% chance that the answer is correct. `is_confident_match` is a practical program label that means “the score passed the configured threshold,” not a statistical guarantee.
+
+### Fallback behavior
+
+When the best score is below the threshold, the chatbot returns this friendly fallback instead of an unrelated FAQ answer:
+
+> I'm sorry, I couldn't find a relevant answer to that question. Try asking about courses, certificates, accounts, payments, technical support, or learning paths.
+
+The fallback includes real HorizonTechX Learning Hub topics, helping the learner rephrase their request in the range covered by the FAQ dataset.
+
+### Empty and effectively empty input
+
+`get_chatbot_response()` first checks whether the value is a string and whether it contains non-whitespace characters. Thus `""` and `"     "` receive a helpful prompt immediately. They do not enter the TF-IDF or cosine-similarity steps.
+
+The function also sends non-blank text through `preprocess_text()` once before matching. If preprocessing produces no usable words—for example, a punctuation-only input such as `"!!!"`—the input is treated as effectively empty and receives the same prompt. This prevents an unnecessary match attempt with an empty vector.
+
+### What `get_chatbot_response()` returns
+
+The function returns a **dictionary** with the same keys in every case:
+
+| Key | Meaning |
+| --- | --- |
+| `response` | The answer to show the user: an FAQ answer, fallback message, or empty-input message. |
+| `matched_question` | The original FAQ question only when a match passed the threshold; otherwise `None`. |
+| `category` | The FAQ category only for an accepted match; otherwise `None`. |
+| `similarity_score` | The top cosine-similarity score for matched or fallback queries; `None` when no matching calculation was needed for empty input. |
+| `is_confident_match` | `True` when the score passed the threshold; otherwise `False`. |
+
+`None` is Python's value for “no value here.” It makes it clear that the bot did not approve a particular FAQ as a valid answer.
+
+For an accepted certificate question, conceptually the dictionary looks like this:
+
+```text
+{
+  response: the FAQ answer,
+  matched_question: the matching certificate FAQ,
+  category: Certificates,
+  similarity_score: 1.0,
+  is_confident_match: True
+}
+```
+
+For an unrelated question, `response` contains the fallback, the FAQ-specific fields are `None`, and `is_confident_match` is `False`.
+
+### How the future Streamlit UI will use this
+
+In Phase 5, the Streamlit application will only need to send a message to `get_chatbot_response(user_query)`, then display the returned `response` text. It may optionally use `category` or `similarity_score` for a development/debug view, but the main chat interface will not need to know how TF-IDF vectors were built.
+
+This separation is helpful: `chatbot.py` owns NLP matching and response decisions, while `app.py` will own the visual interface and conversation history.
+
+### Complete Phase 4 flow
+
+```text
+User query
+    ↓
+Validate input
+    ↓
+Is it blank or effectively empty?
+    ↓ yes                         ↓ no
+Empty-input response          preprocess_text()
+                                    ↓
+                            TF-IDF transform
+                                    ↓
+                            cosine similarity
+                                    ↓
+                               best score
+                                    ↓
+                        Is score >= 0.50?
+                           /              \
+                         yes               no
+                         ↓                 ↓
+                    FAQ answer         fallback
+                         \                 /
+                          ↓               ↓
+                    structured response dictionary
+```
+
+### Actual Phase 4 tests
+
+The following tests ran successfully with the configured threshold of `0.50`:
+
+| User query | Score | Accepted? | Result |
+| --- | ---: | --- | --- |
+| `How do I download my certificate?` | 1.00 | Yes | Correct certificate-download FAQ answer. |
+| `Can I study using my phone?` | 0.60 | Yes | Relevant mobile-learning FAQ answer. |
+| `certificate after course` | 0.57 | Yes | Relevant certificate FAQ answer. |
+| `What is the weather in Beirut?` | 0.00 | No | Fallback response. |
+| `Who won the football match yesterday?` | 0.00 | No | Fallback response. |
+| `course` | 0.45 | No | Fallback response; this checks behavior just below the threshold. |
+| `""` | Not calculated | No | Empty-input response. |
+| `"     "` | Not calculated | No | Empty-input response. |
+| `"!!!"` | Not calculated | No | Effectively-empty-input response. |
+
+The original Phase 3 low-level matcher was also checked with the exact certificate question and still returned its `1.00` best-match score.
+
+### How to test Phase 4 manually
+
+Run the demonstration from the project folder:
+
+```powershell
+.\venv\Scripts\python.exe chatbot.py
+```
+
+The output shows all required cases, including each response, whether it was accepted, its matched FAQ/category when applicable, and the score.
+
+To call the simple response function directly:
+
+```powershell
+.\venv\Scripts\python.exe -c "from chatbot import get_chatbot_response; print(get_chatbot_response('Can I study using my phone?'))"
+```
+
+### What the next phase will do
+
+Phase 5 will transform `app.py` into the Streamlit chat interface. It will use `st.chat_message`, `st.chat_input`, and `st.session_state` to display conversation history and call `get_chatbot_response()` for each user message. The NLP and response logic will remain in `chatbot.py`.

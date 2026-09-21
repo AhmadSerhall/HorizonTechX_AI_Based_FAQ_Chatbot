@@ -10,6 +10,18 @@ from preprocess import preprocess_text
 
 
 DATA_FILE = Path(__file__).parent / "data" / "faqs.json"
+SIMILARITY_THRESHOLD = 0.50
+
+FALLBACK_RESPONSE = (
+    "I'm sorry, I couldn't find a relevant answer to that question. "
+    "Try asking about courses, certificates, accounts, payments, "
+    "technical support, or learning paths."
+)
+
+EMPTY_QUERY_RESPONSE = (
+    "Please enter a question about HorizonTechX Learning Hub. "
+    "For example, you can ask about courses, certificates, accounts, or payments."
+)
 
 
 def load_faqs(file_path=DATA_FILE):
@@ -46,6 +58,46 @@ def find_best_match(user_query, faqs, vectorizer, faq_vectors):
     }
 
 
+def get_chatbot_response(user_query):
+    """Return a safe, UI-ready response dictionary for one user query."""
+    if not isinstance(user_query, str) or not user_query.strip():
+        return {
+            "response": EMPTY_QUERY_RESPONSE,
+            "matched_question": None,
+            "category": None,
+            "similarity_score": None,
+            "is_confident_match": False,
+        }
+
+    if not preprocess_text(user_query):
+        return {
+            "response": EMPTY_QUERY_RESPONSE,
+            "matched_question": None,
+            "category": None,
+            "similarity_score": None,
+            "is_confident_match": False,
+        }
+
+    best_match = find_best_match(user_query, FAQS, VECTORIZER, FAQ_VECTORS)
+
+    if best_match["similarity_score"] < SIMILARITY_THRESHOLD:
+        return {
+            "response": FALLBACK_RESPONSE,
+            "matched_question": None,
+            "category": None,
+            "similarity_score": best_match["similarity_score"],
+            "is_confident_match": False,
+        }
+
+    return {
+        "response": best_match["answer"],
+        "matched_question": best_match["matched_question"],
+        "category": best_match["category"],
+        "similarity_score": best_match["similarity_score"],
+        "is_confident_match": True,
+    }
+
+
 def print_match_result(user_query, result):
     """Print one match result clearly for manual Phase 3 testing."""
     print(f"User query:\n{user_query}")
@@ -55,20 +107,41 @@ def print_match_result(user_query, result):
     print(f"\nSimilarity score:\n{result['similarity_score']:.2f}")
 
 
-if __name__ == "__main__":
-    faqs = load_faqs()
-    vectorizer, faq_vectors, processed_questions = build_faq_vectorizer(faqs)
+def print_chatbot_response(user_query, result):
+    """Print one Phase 4 chatbot response clearly for manual testing."""
+    print(f"User query:\n{user_query!r}")
+    print(f"\nResponse:\n{result['response']}")
+    print(f"\nConfident match:\n{result['is_confident_match']}")
+    print(f"\nMatched FAQ:\n{result['matched_question']}")
+    print(f"\nCategory:\n{result['category']}")
 
-    print(f"Loaded and vectorized {len(faqs)} FAQ questions.")
-    print(f"TF-IDF vocabulary size: {len(vectorizer.get_feature_names_out())}\n")
+    if result["similarity_score"] is None:
+        print("\nSimilarity score:\nNot calculated for empty input")
+    else:
+        print(f"\nSimilarity score:\n{result['similarity_score']:.2f}")
+
+
+FAQS = load_faqs()
+VECTORIZER, FAQ_VECTORS, PROCESSED_FAQ_QUESTIONS = build_faq_vectorizer(FAQS)
+
+
+if __name__ == "__main__":
+    print(f"Loaded and vectorized {len(FAQS)} FAQ questions.")
+    print(f"TF-IDF vocabulary size: {len(VECTORIZER.get_feature_names_out())}")
+    print(f"Similarity threshold: {SIMILARITY_THRESHOLD:.2f}\n")
 
     test_queries = [
         "How do I download my certificate?",
         "Can I study using my phone?",
         "certificate after course",
+        "What is the weather in Beirut?",
+        "Who won the football match yesterday?",
+        "",
+        "     ",
+        "course",
     ]
 
     for query in test_queries:
-        result = find_best_match(query, faqs, vectorizer, faq_vectors)
-        print_match_result(query, result)
+        result = get_chatbot_response(query)
+        print_chatbot_response(query, result)
         print("\n" + "-" * 60 + "\n")
