@@ -38,9 +38,18 @@ def get_preprocessing_steps(text):
 
     lowercase_text = text.lower()
     tokens = word_tokenize(lowercase_text)
-    alphabetic_tokens = [token for token in tokens if token.isalpha()]
+    meaningful_tokens = [
+        token
+        for token in tokens
+        if token.isalpha()
+        or (
+            token.isalnum()
+            and any(character.isalpha() for character in token)
+            and any(character.isdigit() for character in token)
+        )
+    ]
     tokens_without_stopwords = [
-        token for token in alphabetic_tokens if token not in STOP_WORDS
+        token for token in meaningful_tokens if token not in STOP_WORDS
     ]
     lemmatized_tokens = [
         LEMMATIZER.lemmatize(token) for token in tokens_without_stopwords
@@ -50,7 +59,7 @@ def get_preprocessing_steps(text):
         "original": text,
         "lowercase": lowercase_text,
         "tokens": tokens,
-        "alphabetic_tokens": alphabetic_tokens,
+        "meaningful_tokens": meaningful_tokens,
         "tokens_without_stopwords": tokens_without_stopwords,
         "lemmatized_tokens": lemmatized_tokens,
     }
@@ -69,7 +78,7 @@ def print_preprocessing_steps(text):
     print(f"Original sentence: {steps['original']}")
     print(f"Lowercase: {steps['lowercase']}")
     print(f"Tokenization: {steps['tokens']}")
-    print(f"Remove punctuation/non-alphabetic tokens: {steps['alphabetic_tokens']}")
+    print(f"Remove punctuation/non-meaningful tokens: {steps['meaningful_tokens']}")
     print(f"Remove stopwords: {steps['tokens_without_stopwords']}")
     print(f"Lemmatization: {steps['lemmatized_tokens']}")
     print(f"Final processed result: {' '.join(steps['lemmatized_tokens'])}")

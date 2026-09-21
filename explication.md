@@ -103,7 +103,7 @@ Phase 2 will create `preprocess.py` and use NLTK to prepare text for matching. I
 We created `preprocess.py`, a reusable Python module that converts a raw English question into a simpler, consistent form. Its main function is `preprocess_text(text)`. It applies this pipeline:
 
 ```text
-raw text → lowercase → tokens → alphabetic tokens → no stopwords → lemmas → processed text
+raw text → lowercase → tokens → meaningful tokens → no stopwords → lemmas → processed text
 ```
 
 The module also contains two learning helpers. `get_preprocessing_steps(text)` returns each intermediate stage in a dictionary, while `print_preprocessing_steps(text)` prints those stages clearly. These helpers make the process visible while we are learning and testing. In Phase 3, the matching engine will only need `preprocess_text()`.
@@ -154,7 +154,7 @@ Inside the pipeline:
 1. It checks that `text` is a string. A **string** is text in Python. If a number, list, or other type is passed by mistake, Python raises a clear `TypeError` instead of producing a confusing result.
 2. `text.lower()` makes every letter lowercase. Therefore `Course`, `COURSE`, and `course` are treated as the same word.
 3. `word_tokenize()` performs **tokenization**: it splits text into small pieces called **tokens**. Words and punctuation become separate tokens. A computer can filter and compare a list of tokens more easily than one long sentence.
-4. The list comprehension `token for token in tokens if token.isalpha()` keeps only alphabetic tokens. It removes punctuation such as `?` and `,`, plus numbers or symbols. `isalpha()` is a string method that is true only for letters.
+4. The token-filtering list comprehension keeps alphabetic words and mixed letter-number business terms such as `p2p`, while removing punctuation, symbols, and pure numbers. The later tuning section explains why this small extension was needed for ERP abbreviations.
 5. Another list comprehension removes English **stopwords**. Stopwords are very common words that usually add little topic information when comparing FAQ questions, such as `the`, `is`, `and`, `my`, `do`, and `can`.
 6. `LEMMATIZER.lemmatize(token)` changes words to a basic dictionary form called a **lemma**. For example, `courses` becomes `course`, `passwords` becomes `password`, and `learners` becomes `learner`. This simple beginner-friendly use focuses especially on common noun forms; it does not yet add the extra complexity of part-of-speech tagging.
 7. `" ".join(...)` combines the final word list back into one space-separated processed string.
@@ -170,7 +170,7 @@ Lowercase: how do i reset my passwords for the courses?
 ↓
 Tokenization: ['how', 'do', 'i', 'reset', 'my', 'passwords', 'for', 'the', 'courses', '?']
 ↓
-Remove punctuation/non-alphabetic tokens: ['how', 'do', 'i', 'reset', 'my', 'passwords', 'for', 'the', 'courses']
+Remove punctuation/non-meaningful tokens: ['how', 'do', 'i', 'reset', 'my', 'passwords', 'for', 'the', 'courses']
 ↓
 Remove stopwords: ['reset', 'passwords', 'courses']
 ↓
@@ -691,3 +691,296 @@ Then try the questions from the test table above. Use the sidebar checkbox to in
 ### What comes next
 
 The next stage is **real user testing and tuning**. Before any final polish, test a variety of natural questions and note which answers feel useful, weak, or missing. We should use those observations—not assumptions alone—to decide whether any threshold, preprocessing, FAQ-data, or matching improvements are appropriate.
+
+## Domain Migration — FinERP Learning Assistant
+
+### What changed and what stayed the same
+
+Before finalization, we changed the chatbot knowledge domain from the fictional HorizonTechX Learning Hub support FAQ to an educational Accounting, Finance, and ERP knowledge base. The user-facing application is now called **FinERP Learning Assistant**.
+
+This remains Task 2 of the HorizonTechX AI Internship. The internship context stays in this learning document and project history, while the chatbot now teaches general beginner concepts in accounting, bookkeeping, financial statements, finance, inventory, business processes, ERP, and VAT.
+
+The data and domain wording changed, but the NLP design did not:
+
+- data/faqs.json was initially replaced with a 75-question FinERP educational dataset.
+- app.py now contains FinERP titles, welcome text, sidebar text, example questions, and chat-input wording.
+- chatbot.py now has FinERP fallback and empty-input messages, plus FinERP manual test questions.
+- The preprocessing functions, TfidfVectorizer configuration, cosine-similarity calculation, SIMILARITY_THRESHOLD value of 0.50, find_best_match(), and get_chatbot_response() architecture were not changed.
+
+This demonstrates good separation of responsibilities: a chatbot with a well-separated data layer can learn a new subject mainly by replacing its FAQ data, rather than rewriting all program logic.
+
+### The new FAQ knowledge base
+
+The JSON file keeps the same structure introduced in Phase 1. Every FAQ still contains a unique id, category, question, and answer. The initial migration contained 75 FAQs across these 11 categories:
+
+1. Accounting Fundamentals
+2. Financial Statements
+3. Bookkeeping and Transactions
+4. Accounts Receivable and Accounts Payable
+5. Inventory and Cost Accounting
+6. Finance and Business Metrics
+7. Budgeting and Forecasting
+8. ERP Fundamentals
+9. ERP and Accounting
+10. Business Processes
+11. Tax and VAT Fundamentals
+
+The VAT entries are general and educational only. They do not give jurisdiction-specific tax advice.
+
+### Why the NLP architecture did not need a rewrite
+
+The existing pipeline only needs a set of FAQ question strings. It performs the following same jobs for any subject:
+
+Raw FAQ questions
+    ↓
+preprocess_text()
+    ↓
+TfidfVectorizer.fit_transform()
+    ↓
+FAQ vectors
+    ↓
+cosine similarity with a user query
+
+After the dataset changed, the existing preprocess_text() function cleaned the new accounting and ERP questions. The unchanged TfidfVectorizer then learned a new vocabulary from those processed questions. That is why no rewrite of preprocessing, TF-IDF, cosine similarity, or threshold logic was necessary.
+
+### New TF-IDF dimensions
+
+The old 50-question learning-platform dataset created a matrix with shape (50, 93): 50 FAQ vectors and 93 word features.
+
+The initial FinERP migration created a TF-IDF matrix with shape **(75, 112)**:
+
+- 75 rows: one vector for each initial FAQ question.
+- 112 columns: one learned word feature from the initial accounting, finance, and ERP vocabulary.
+
+The feature count changed because TF-IDF learns its vocabulary from the dataset. Words such as asset, liability, inventory, reconciliation, supplier, and ERP create a different feature collection than the old learning-platform vocabulary.
+
+### User-facing FinERP interface
+
+The Streamlit application now presents itself as FinERP Learning Assistant and asks users to explore accounting, finance, bookkeeping, financial statements, business processes, and ERP concepts. The sidebar offers FinERP examples and the existing chat layout, history, Clear conversation button, debug panel, and session-state design were preserved.
+
+During the intentional domain migration, an already-open Streamlit session retained its old welcome message. This is normal because session state survives script reruns. To handle the migration, app.py now stores a chatbot_domain value in session state. When the value is not finerp, the app resets the old conversation once to the FinERP welcome message. Ordinary chat history remains unchanged after this migration reset.
+
+### Dataset and engine validation
+
+The following checks passed:
+
+- JSON syntax is valid.
+- All 75 initial FAQ entries had exactly id, category, question, and answer fields.
+- All IDs are unique.
+- All 11 expected categories are present.
+- All FAQ questions preprocess successfully.
+- chatbot.py loaded all 75 initial FAQs and created the (75, 112) TF-IDF matrix.
+- All Python files compile successfully.
+- The Streamlit interface opens with the FinERP title, welcome message, sidebar, multi-message history, and optional match details.
+
+### FinERP matching tests
+
+The threshold remains 0.50. “Accepted” means the current best cosine similarity score passed that threshold. The score is not a probability.
+
+| User query | Best FAQ selected by current engine | Score | Accepted? | Semantic result |
+| --- | --- | ---: | --- | --- |
+| What is the accounting equation? | What is the accounting equation? | 1.00 | Yes | Correct. |
+| What is a balance sheet? | What is a balance sheet? | 1.00 | Yes | Correct. |
+| What is VAT? | What is VAT? | 1.00 | Yes | Correct. |
+| What does a company own? | What are liabilities, or amounts a company owes? | 0.43 | No | Relevant intent, but rejected and the raw best FAQ is wrong. |
+| What does a company owe? | What are liabilities, or amounts a company owes? | 0.43 | No | Relevant intent, but rejected by the threshold. |
+| What is the difference between revenue and profit? | What is the difference between revenue and profit? | 1.00 | Yes | Correct. |
+| customer owes us money | What happens when a customer owes the company money? | 0.81 | Yes | Correct accounts-receivable explanation. |
+| we owe a supplier money | What happens when a company owes a supplier money? | 0.68 | Yes | Correct accounts-payable explanation. |
+| What are debits and credits? | What is the difference between debit and credit? | 0.87 | Yes | Correct. |
+| Where can I see a company assets and liabilities? | Which financial statement shows a company's assets and liabilities? | 0.70 | Yes | Correct balance-sheet explanation. |
+| What statement shows profit? | What is profit? | 0.52 | Yes | Incomplete match; an income-statement answer would be better. |
+| Why is cash flow different from profit? | Why can cash flow be different from profit? | 1.00 | Yes | Correct. |
+| Why would a business need an ERP? | Why do businesses use ERP systems? | 0.63 | Yes | Correct. |
+| What does P2P mean? | What does FIFO mean in inventory accounting? | 0.56 | Yes | Incorrect accepted match. |
+| What is the procure to pay process? | What is procure to pay, also called P2P? | 0.62 | Yes | Correct. |
+| What happens between buying something and paying the supplier? | What happens when a company owes a supplier money? | 0.64 | Yes | Related but incomplete; it misses the full procure-to-pay process. |
+| What is working capital? | What is working capital? | 1.00 | Yes | Correct. |
+| What does FIFO mean? | What does FIFO mean in inventory accounting? | 0.79 | Yes | Correct. |
+| What is the weather in Beirut? | What is accounting? | 0.00 | No | Correctly rejected with fallback. |
+| Who won the football match? | What is accounting? | 0.00 | No | Correctly rejected with fallback. |
+| Tell me a joke. | What is accounting? | 0.00 | No | Correctly rejected with fallback. |
+| How do I cook pasta? | What is accounting? | 0.00 | No | Correctly rejected with fallback. |
+
+For rejected unrelated questions, the interface displays the fallback response. It does not show the raw fallback candidate such as What is accounting.
+
+### Observed limitations for later manual testing
+
+These observations are recorded without changing the threshold or NLP engine:
+
+- Relevant prompts rejected below 0.50: What does a company own? and What does a company owe? both scored 0.43. The first should lead to assets; the second has the correct raw candidate but does not pass the threshold.
+- Initial migration result: What does P2P mean? scored 0.56 and matched FIFO. At that stage, the preprocessor removed the alphanumeric abbreviation P2P because it kept only alphabetic tokens. The remaining word mean overlapped the FIFO FAQ.
+- Ambiguous wording: What statement shows profit? was accepted but received a generic profit definition rather than an income-statement answer.
+- Process-overlap wording: What happens between buying something and paying the supplier? was accepted as accounts payable. That is related but less complete than the procure-to-pay explanation.
+
+For data quality, the dataset spells process names such as procure to pay, order to cash, and record to report with regular words rather than only hyphenated forms. This preserves useful words for the current punctuation-filtering preprocessor. The abbreviation-only P2P test remains useful because it shows a real limitation of the current implementation.
+
+These findings should guide real user testing. They do not justify automatically changing the threshold, preprocessing, dataset, or matching algorithm before the user evaluates them.
+
+### How to test the FinERP chatbot manually
+
+Run the app from the project folder:
+
+    .\venv\Scripts\streamlit.exe run app.py
+
+Try the exact, paraphrased, and unrelated questions in the table above. Enable Show match details to inspect the selected FAQ, category, and similarity score. Pay particular attention to the recorded limitations before deciding whether any future tuning is justified.
+
+### Current project status
+
+The FinERP domain migration is complete, but Phase 6 has **not** started. The next activity is manual user testing of the new knowledge base and a decision about any justified improvements.
+
+## NLP Tuning and Stress Testing — Before Phase 6
+
+### Why we investigated before changing anything
+
+Real testing of the FinERP version found useful edge cases. We first inspected the preprocessing output, the TF-IDF vocabulary, the raw best matches, and the existing threshold behavior. This was important because each problem had a different cause:
+
+- The question “What does a company own?” became only “company” after preprocessing because the NLTK English stopword list treats “own” as a common word. It had too little useful overlap with the original assets FAQ and scored 0.43.
+- The question “What does a company owe?” had a correct liabilities candidate but also scored 0.43, below the 0.50 threshold.
+- P2P, O2C, and R2R were absent from the old TF-IDF vocabulary. The earlier filter used an alphabetic-only test, so it removed these mixed letter-number tokens. “What does P2P mean?” became only “mean” and incorrectly matched the FAQ about FIFO.
+- “What statement shows profit?” overlapped the short generic profit FAQ more strongly than the income-statement FAQ because the latter did not contain enough of the natural wording statement, shows, and profit.
+- “What happens between buying something and paying the supplier?” shared supplier and payment language with accounts payable, but the original procure-to-pay FAQ did not include enough of the full process wording.
+
+We did not blindly lower the global threshold. The problems included preprocessing, FAQ wording, abbreviation support, and a few targeted intent gaps, so those were addressed first.
+
+### Small preprocessing improvement for ERP abbreviations
+
+The filter in preprocess.py now keeps either:
+
+- alphabetic words, such as asset or supplier, or
+- mixed letter-number tokens containing at least one letter and at least one number, such as p2p, o2c, and r2r.
+
+It still removes punctuation, symbols, and pure numbers. For example:
+
+| Input | Meaningful tokens after filtering |
+| --- | --- |
+| P2P | p2p |
+| O2C | o2c |
+| R2R | r2r |
+| procure to pay | procure, to, pay |
+| order to cash | order, to, cash |
+| record to report | record, to, report |
+| 123 | none |
+| !!! | none |
+
+After stopword removal, “to” is removed from the full process names, leaving the informative word pairs procure pay, order cash, and record report. This is the smallest reasonable change for business abbreviations: it does not keep arbitrary punctuation or pure numeric noise.
+
+### Targeted FAQ improvements
+
+The dataset grew from 75 to 80 FAQs, still within the original 70–80 target range. We did not add a large number of near-duplicate questions. The five new entries solve demonstrated language gaps:
+
+- What does a company own? teaches assets.
+- What does a company owe? teaches liabilities.
+- What is P2P?
+- What is O2C?
+- What is R2R?
+
+Existing questions were also improved with useful beginner terminology:
+
+- The income-statement question now includes statement, profit, and loss.
+- The weighted-average question includes stock valuation.
+- The expenses question includes operating costs.
+- The P2P, O2C, and R2R questions include their full process wording.
+- The P2P question includes buying goods, paying, and supplier language.
+- The variance-analysis question includes actual results, differ, and budget.
+
+These changes improve the FAQ questions because TF-IDF matching compares user queries primarily with those questions.
+
+### Final vectorization result
+
+With the tuned 80-question dataset, the unchanged TF-IDF engine builds a matrix with shape **(80, 121)**:
+
+- 80 rows, one per FAQ.
+- 121 learned word features from the current processed vocabulary.
+
+The feature count increased from the initial FinERP value because the alias questions and new terms such as p2p, o2c, r2r, stock, actual, and results changed the learned vocabulary.
+
+### Results for the original problem questions
+
+| Original issue query | Final best FAQ | Score | Outcome |
+| --- | --- | ---: | --- |
+| What does a company own? | What does a company own? | 1.00 | Accepted and correct. |
+| What does a company owe? | What does a company owe? | 1.00 | Accepted and correct. |
+| What does P2P mean? | What is P2P? | 0.75 | Accepted and correct. |
+| What statement shows profit? | What is an income statement that shows profit or loss? | 0.74 | Accepted and correct. |
+| What happens between buying something and paying the supplier? | What does P2P mean: the procure to pay process from buying goods to paying a supplier? | 0.54 | Accepted and correct. |
+
+### Threshold evaluation
+
+The similarity threshold remains **0.50**. In the manual evaluation below, the five unrelated inputs all scored 0.00 and correctly received fallbacks. Every relevant test question was accepted, including the lowest accepted relevant result, procure to pay at 0.51.
+
+This broader evidence supports keeping 0.50 for now. Lowering the threshold is not needed to solve the original known issues, and it could make weak matches more likely as the dataset grows. The score remains a cosine-similarity value, not a probability.
+
+### Manual stress-test evaluation set
+
+This is a manual evaluation/test set, not a formal accuracy metric. It contains 45 natural user questions across all 11 categories, including exact questions, paraphrases, short keyword queries, informal wording, business abbreviations, related concepts, and unrelated questions.
+
+| Query | Expected concept | Matched FAQ | Score | Result | Manual judgement |
+| --- | --- | --- | ---: | --- | --- |
+| What is the accounting equation? | Accounting equation | What is the accounting equation? | 1.00 | Accepted | Correct |
+| What does a company own? | Assets | What does a company own? | 1.00 | Accepted | Correct |
+| What does a company owe? | Liabilities | What does a company owe? | 1.00 | Accepted | Correct |
+| What are debits and credits? | Debit and credit | What is the difference between debit and credit? | 0.87 | Accepted | Correct |
+| business operating costs | Expenses | What are business expenses or operating costs? | 0.83 | Accepted | Correct |
+| What is a balance sheet? | Balance sheet | What is a balance sheet? | 1.00 | Accepted | Correct |
+| What statement shows profit? | Income statement | What is an income statement that shows profit or loss? | 0.74 | Accepted | Correct |
+| Why is cash flow different from profit? | Cash flow | Why can cash flow be different from profit? | 1.00 | Accepted | Correct |
+| gross margin | Gross margin | What is gross margin? | 1.00 | Accepted | Correct |
+| What is a journal entry? | Journal entry | What is a journal entry? | 1.00 | Accepted | Correct |
+| trial balance | Trial balance | What is a trial balance? | 1.00 | Accepted | Correct |
+| How do you reconcile an account? | Reconciliation | What is account reconciliation? | 0.64 | Accepted | Correct |
+| customer owes us money | Accounts receivable | What happens when a customer owes the company money? | 0.82 | Accepted | Correct |
+| we owe our supplier money | Accounts payable | What happens when a company owes a supplier money? | 0.53 | Accepted | Correct |
+| What is an invoice? | Invoice | What is an invoice? | 1.00 | Accepted | Correct |
+| Why would I issue a credit note? | Credit note | What is a credit note? | 1.00 | Accepted | Correct |
+| stock valuation | Inventory valuation | What is weighted average inventory or stock valuation? | 0.66 | Accepted | Correct |
+| FIFO | FIFO | What does FIFO mean in inventory accounting? | 0.60 | Accepted | Correct |
+| cost of goods sold | Cost of goods sold | What is cost of goods sold? | 1.00 | Accepted | Correct |
+| direct and indirect cost | Direct versus indirect cost | What is the difference between direct cost and indirect cost? | 0.89 | Accepted | Correct |
+| What is revenue? | Revenue | What is revenue? | 1.00 | Accepted | Correct |
+| What is profit? | Profit | What is profit? | 1.00 | Accepted | Correct |
+| revenue vs profit | Revenue versus profit | What is the difference between revenue and profit? | 0.84 | Accepted | Correct |
+| What is working capital? | Working capital | What is working capital? | 1.00 | Accepted | Correct |
+| break even point | Break-even point | What is the break-even point? | 1.00 | Accepted | Correct |
+| budget compared with forecast | Budget versus forecast | What is the difference between a budget and a forecast? | 0.84 | Accepted | Correct |
+| Why are actual results different from budget? | Variance analysis | What is variance analysis when actual results differ from budget? | 0.59 | Accepted | Correct |
+| What is ERP? | ERP | What is ERP? | 1.00 | Accepted | Correct |
+| What is an ERP financial module? | ERP financial module | What is an ERP financial module? | 1.00 | Accepted | Correct |
+| What is master data? | Master data | What is master data in an ERP system? | 0.80 | Accepted | Correct |
+| What does P2P mean? | P2P | What is P2P? | 0.75 | Accepted | Correct |
+| procure to pay | P2P full form | What does P2P mean: the procure to pay process from buying goods to paying a supplier? | 0.51 | Accepted | Correct |
+| What is O2C? | O2C | What is O2C? | 1.00 | Accepted | Correct |
+| order to cash | O2C full form | What does O2C mean: the order to cash process from customer order to payment? | 0.67 | Accepted | Correct |
+| What is R2R? | R2R | What is R2R? | 1.00 | Accepted | Correct |
+| record to report | R2R full form | What does R2R mean: the record to report process for accounting reports? | 0.74 | Accepted | Correct |
+| What happens between buying something and paying the supplier? | P2P process | What does P2P mean: the procure to pay process from buying goods to paying a supplier? | 0.54 | Accepted | Correct |
+| What is VAT? | VAT | What is VAT? | 1.00 | Accepted | Correct |
+| input VAT | Input VAT | What is input VAT? | 1.00 | Accepted | Correct |
+| tax inclusive price | Tax-inclusive price | What is the difference between tax inclusive and tax exclusive prices? | 0.84 | Accepted | Correct |
+| Tell me a joke | Unrelated | What is accounting? | 0.00 | Fallback | Correct fallback |
+| What is the weather? | Unrelated | What is accounting? | 0.00 | Fallback | Correct fallback |
+| Who won the football match? | Unrelated | What is accounting? | 0.00 | Fallback | Correct fallback |
+| How do I cook pasta? | Unrelated | What is accounting? | 0.00 | Fallback | Correct fallback |
+| Write Python code | Unrelated | What is accounting? | 0.00 | Fallback | Correct fallback |
+
+### Manual evaluation summary
+
+- Number tested: 45.
+- Relevant questions tested: 40.
+- Correct accepted relevant matches: 40.
+- Unrelated questions tested: 5.
+- Correct fallbacks: 5.
+- Incorrect accepted matches: 0.
+- Relevant questions incorrectly rejected: 0.
+
+Again, this is a focused manual test set, not a claim of formal model accuracy. Different phrasings or unseen concepts can still behave differently.
+
+### Remaining limitations
+
+The chatbot still uses classical word-overlap methods. It does not truly understand meaning in the way a human does, so future natural phrases without represented vocabulary can receive low scores or an imperfect related match. It also only covers the concepts included in the FAQ data; missing concepts should correctly receive a fallback rather than invented information.
+
+Abbreviations now work because they are preserved and represented in targeted FAQ questions. Other future business abbreviations may need the same deliberate data support. VAT content remains general and educational, not jurisdiction-specific advice.
+
+### Current status
+
+All JSON, unique-ID, preprocessing, vectorization, backend, compilation, and Streamlit checks were run after tuning. Phase 6 has **not** started. The next step is user review and manual testing of this tuned FinERP version.

@@ -1,4 +1,4 @@
-"""Streamlit interface for the HorizonTechX Learning Assistant."""
+"""Streamlit interface for the FinERP Learning Assistant."""
 
 import streamlit as st
 
@@ -6,9 +6,9 @@ from chatbot import get_chatbot_response
 
 
 WELCOME_MESSAGE = (
-    "Hello! I'm the HorizonTechX Learning Assistant. "
-    "Ask me about courses, certificates, accounts, payments, technical support, "
-    "or learning paths."
+    "Hello! I'm the FinERP Learning Assistant. "
+    "Ask me about accounting, finance, bookkeeping, financial statements, "
+    "business processes, and ERP concepts."
 )
 
 
@@ -34,29 +34,38 @@ def show_match_details(details):
 
 
 st.set_page_config(
-    page_title="HorizonTechX Learning Assistant",
-    page_icon="🎓",
+    page_title="FinERP Learning Assistant",
+    page_icon="📊",
     layout="centered",
 )
 
-if "messages" not in st.session_state:
+if (
+    "messages" not in st.session_state
+    or st.session_state.get("chatbot_domain") != "finerp"
+):
     reset_conversation()
+    st.session_state.chatbot_domain = "finerp"
 
 with st.sidebar:
     st.header("About")
     st.write(
-        "A FAQ chatbot for HorizonTechX Learning Hub. It uses NLP, TF-IDF, "
-        "and cosine similarity to find relevant answers."
+        "A beginner-friendly educational assistant for accounting, finance, "
+        "bookkeeping, business processes, and ERP concepts."
     )
 
     st.divider()
     st.subheader("What you can ask about")
-    st.write("Courses, certificates, accounts, payments, technical support, and learning paths.")
+    st.write(
+        "Accounting, financial statements, bookkeeping, receivables, payables, "
+        "inventory, finance metrics, VAT, and ERP."
+    )
 
     st.subheader("Example questions")
-    st.caption("How do I download my certificate?")
-    st.caption("Can I study using my phone?")
-    st.caption("How can I reset my password?")
+    st.caption("What is the accounting equation?")
+    st.caption("What is the difference between revenue and profit?")
+    st.caption("What are accounts receivable?")
+    st.caption("What is ERP?")
+    st.caption("What is the procure-to-pay process?")
 
     st.divider()
     show_match_details_enabled = st.checkbox("Show match details")
@@ -65,10 +74,10 @@ with st.sidebar:
         reset_conversation()
         st.rerun()
 
-st.title("HorizonTechX Learning Assistant")
+st.title("FinERP Learning Assistant")
 st.caption(
-    "Ask questions about the learning platform, courses, accounts, certificates, "
-    "payments, and related FAQs."
+    "Ask questions about accounting, finance, bookkeeping, financial statements, "
+    "business processes, and ERP concepts."
 )
 st.divider()
 
@@ -82,7 +91,7 @@ for message in st.session_state.messages:
         ):
             show_match_details(message["details"])
 
-if user_query := st.chat_input("Ask a question about HorizonTechX Learning Hub..."):
+if user_query := st.chat_input("Ask an accounting, finance, or ERP question..."):
     st.session_state.messages.append({"role": "user", "content": user_query})
 
     with st.chat_message("user"):

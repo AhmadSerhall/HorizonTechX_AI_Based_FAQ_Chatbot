@@ -1,4 +1,4 @@
-"""FAQ loading and TF-IDF matching for the HorizonTechX FAQ chatbot."""
+"""FAQ loading and TF-IDF matching for the FinERP educational assistant."""
 
 import json
 from pathlib import Path
@@ -14,13 +14,13 @@ SIMILARITY_THRESHOLD = 0.50
 
 FALLBACK_RESPONSE = (
     "I'm sorry, I couldn't find a relevant answer to that question. "
-    "Try asking about courses, certificates, accounts, payments, "
-    "technical support, or learning paths."
+    "Try asking about accounting, finance, bookkeeping, financial statements, "
+    "business processes, inventory, or ERP concepts."
 )
 
 EMPTY_QUERY_RESPONSE = (
-    "Please enter a question about HorizonTechX Learning Hub. "
-    "For example, you can ask about courses, certificates, accounts, or payments."
+    "Please enter a question for the FinERP Learning Assistant. "
+    "For example, you can ask about accounting, finance, bookkeeping, or ERP."
 )
 
 
@@ -131,14 +131,14 @@ if __name__ == "__main__":
     print(f"Similarity threshold: {SIMILARITY_THRESHOLD:.2f}\n")
 
     test_queries = [
-        "How do I download my certificate?",
-        "Can I study using my phone?",
-        "certificate after course",
+        "What is the accounting equation?",
+        "What does a company own?",
+        "What's the difference between revenue and profit?",
+        "customer owes us money",
+        "What is ERP?",
+        "What does P2P mean?",
         "What is the weather in Beirut?",
-        "Who won the football match yesterday?",
         "",
-        "     ",
-        "course",
     ]
 
     for query in test_queries:

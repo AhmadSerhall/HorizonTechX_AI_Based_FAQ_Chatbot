@@ -1,302 +1,482 @@
 [
   {
     "id": 1,
-    "category": "Getting Started",
-    "question": "What is HorizonTechX Learning Hub?",
-    "answer": "HorizonTechX Learning Hub is an online learning platform where learners can take technology courses, follow structured learning paths, and earn completion certificates."
+    "category": "Accounting Fundamentals",
+    "question": "What is accounting?",
+    "answer": "Accounting is the process of recording, organizing, and reporting a business's financial activities so people can understand its financial position and performance."
   },
   {
     "id": 2,
-    "category": "Getting Started",
-    "question": "How do I create an account?",
-    "answer": "Select the Sign Up option on the website, enter your name, email address, and password, then confirm your email address to activate your account."
+    "category": "Accounting Fundamentals",
+    "question": "What are assets, or things a company owns?",
+    "answer": "Assets are resources a business owns or controls that are expected to provide value, such as cash, inventory, equipment, or money owed by customers."
   },
   {
     "id": 3,
-    "category": "Getting Started",
-    "question": "Is creating an account free?",
-    "answer": "Yes. Creating a HorizonTechX Learning Hub account is free. Some courses are free, while premium courses require payment or a subscription."
+    "category": "Accounting Fundamentals",
+    "question": "What are liabilities, or amounts a company owes?",
+    "answer": "Liabilities are obligations a business owes to other parties, such as supplier bills, bank loans, salaries payable, or taxes payable."
   },
   {
     "id": 4,
-    "category": "Getting Started",
-    "question": "Can I use the platform without an account?",
-    "answer": "You can browse course information without an account, but you need an account to enroll in courses, save progress, and receive certificates."
+    "category": "Accounting Fundamentals",
+    "question": "What is owner's equity in accounting?",
+    "answer": "Equity is the owner's remaining interest in a business after liabilities are subtracted from assets. It can include owner investment and retained earnings."
   },
   {
     "id": 5,
-    "category": "Getting Started",
-    "question": "How do I log in to my account?",
-    "answer": "Choose Log In, enter the email address and password connected to your account, and then select the login button."
+    "category": "Accounting Fundamentals",
+    "question": "What is revenue?",
+    "answer": "Revenue is income earned from a business's normal activities, such as selling goods or providing services, before subtracting expenses."
   },
   {
     "id": 6,
-    "category": "Courses",
-    "question": "What subjects can I learn on the platform?",
-    "answer": "The platform offers technology-focused courses such as Python, web development, data analysis, artificial intelligence, cybersecurity, cloud computing, and career skills."
+    "category": "Accounting Fundamentals",
+    "question": "What are business expenses or operating costs?",
+    "answer": "Expenses are costs incurred to operate a business and earn revenue, such as rent, wages, utilities, advertising, and supplies."
   },
   {
     "id": 7,
-    "category": "Courses",
-    "question": "How do I enroll in a course?",
-    "answer": "Open the course page and select Enroll. If the course is paid, complete the checkout step before access is added to your dashboard."
+    "category": "Accounting Fundamentals",
+    "question": "What is the accounting equation?",
+    "answer": "The accounting equation is Assets = Liabilities + Equity. It shows that the resources of a business are financed by borrowing, owner investment, or earned profits."
   },
   {
     "id": 8,
-    "category": "Courses",
-    "question": "Are there free courses available?",
-    "answer": "Yes. The catalog includes selected free introductory courses. Use the price filter on the course catalog to find them."
+    "category": "Accounting Fundamentals",
+    "question": "What is the difference between debit and credit?",
+    "answer": "Debit and credit are the two sides of an accounting entry. Their effect depends on the account type: debits usually increase assets and expenses, while credits usually increase liabilities, equity, and revenue."
   },
   {
     "id": 9,
-    "category": "Courses",
-    "question": "How long do I have access to a course?",
-    "answer": "After enrollment, you have access to the course materials for as long as your subscription is active or for the access period shown on that course page."
+    "category": "Financial Statements",
+    "question": "What is a balance sheet?",
+    "answer": "A balance sheet is a financial statement that shows a business's assets, liabilities, and equity at a specific date."
   },
   {
     "id": 10,
-    "category": "Courses",
-    "question": "Can I take more than one course at a time?",
-    "answer": "Yes. You can enroll in and study multiple courses at the same time. Your progress for each course is saved separately."
+    "category": "Financial Statements",
+    "question": "What is an income statement that shows profit or loss?",
+    "answer": "An income statement reports revenue, expenses, and profit or loss over a period of time. It is also called a profit and loss statement."
   },
   {
     "id": 11,
-    "category": "Courses",
-    "question": "Can I preview a course before enrolling?",
-    "answer": "Many courses include preview lessons or a course outline. Visit the course page to see the available preview content."
+    "category": "Financial Statements",
+    "question": "What is a cash flow statement?",
+    "answer": "A cash flow statement explains cash received and cash paid during a period, usually grouped into operating, investing, and financing activities."
   },
   {
     "id": 12,
-    "category": "Courses",
-    "question": "How do I find beginner-friendly courses?",
-    "answer": "Use the level filter in the course catalog and choose Beginner. Course pages also display the recommended skill level and prerequisites."
+    "category": "Financial Statements",
+    "question": "What is gross profit?",
+    "answer": "Gross profit is revenue minus the direct cost of the goods or services sold. It shows how much remains before operating expenses."
   },
   {
     "id": 13,
-    "category": "Courses",
-    "question": "Are there prerequisites for courses?",
-    "answer": "Some intermediate and advanced courses have prerequisites. Each course page lists the skills or previous knowledge that are recommended before starting."
+    "category": "Financial Statements",
+    "question": "What is net income?",
+    "answer": "Net income is the profit remaining after all expenses, including operating costs, interest, and taxes, are subtracted from revenue."
   },
   {
     "id": 14,
-    "category": "Courses",
-    "question": "Can I download course videos?",
-    "answer": "Course videos are available for streaming through the platform. Download availability depends on the specific course and your subscription plan."
+    "category": "Financial Statements",
+    "question": "What are retained earnings?",
+    "answer": "Retained earnings are cumulative profits kept in the business rather than distributed to owners or shareholders."
   },
   {
     "id": 15,
-    "category": "Courses",
-    "question": "Can I learn from my mobile phone?",
-    "answer": "Yes. The learning platform works in modern mobile browsers, so you can watch lessons and complete many activities from a phone or tablet."
+    "category": "Financial Statements",
+    "question": "What is operating income?",
+    "answer": "Operating income is profit from a company's main business activities before interest and taxes. It focuses on how the core business performed."
   },
   {
     "id": 16,
-    "category": "Learning Experience",
-    "question": "How is my course progress tracked?",
-    "answer": "Your progress is updated when you complete lessons, quizzes, and course sections while logged in. You can view it from your learning dashboard."
+    "category": "Financial Statements",
+    "question": "Which financial statement shows a company's assets and liabilities?",
+    "answer": "The balance sheet shows assets, liabilities, and equity. It describes the company's financial position at a point in time."
   },
   {
     "id": 17,
-    "category": "Learning Experience",
-    "question": "Can I pause a course and continue later?",
-    "answer": "Yes. Your completed lessons and progress are saved automatically, so you can return to the course later from your dashboard."
+    "category": "Bookkeeping and Transactions",
+    "question": "What is a journal entry?",
+    "answer": "A journal entry is the first formal record of a financial transaction. It lists the accounts affected, the debit amount, the credit amount, and a description."
   },
   {
     "id": 18,
-    "category": "Learning Experience",
-    "question": "What happens if I fail a quiz?",
-    "answer": "Most course quizzes can be attempted again. Review the lesson material and follow the instructions on the quiz page for another attempt."
+    "category": "Bookkeeping and Transactions",
+    "question": "What is a general ledger?",
+    "answer": "A general ledger is the complete collection of a business's accounts and their transaction balances, such as cash, sales, rent expense, and accounts payable."
   },
   {
     "id": 19,
-    "category": "Learning Experience",
-    "question": "Can I ask questions during a course?",
-    "answer": "Yes. Courses may provide a discussion area where you can ask questions, share ideas, and learn with other students."
+    "category": "Bookkeeping and Transactions",
+    "question": "What is a trial balance?",
+    "answer": "A trial balance is a list of account balances used to check whether total debits equal total credits before financial statements are prepared."
   },
   {
     "id": 20,
-    "category": "Learning Experience",
-    "question": "How do I bookmark a lesson?",
-    "answer": "Use the bookmark icon on a lesson page. Your saved lessons appear in the bookmarks area of your dashboard."
+    "category": "Bookkeeping and Transactions",
+    "question": "What is double-entry bookkeeping?",
+    "answer": "Double-entry bookkeeping records every transaction in at least two accounts, with total debits equal to total credits. This helps keep the accounting equation balanced."
   },
   {
     "id": 21,
-    "category": "Learning Experience",
-    "question": "Can I change the playback speed of a video?",
-    "answer": "Yes. Use the video player settings to choose a slower or faster playback speed when that option is available."
+    "category": "Bookkeeping and Transactions",
+    "question": "What are adjusting entries?",
+    "answer": "Adjusting entries are entries made at the end of an accounting period to record items such as accrued expenses, prepaid costs, depreciation, or earned revenue."
   },
   {
     "id": 22,
-    "category": "Learning Experience",
-    "question": "Are course captions available?",
-    "answer": "Many video lessons include captions. Turn them on from the video player controls when captions are available for that lesson."
+    "category": "Bookkeeping and Transactions",
+    "question": "What is account reconciliation?",
+    "answer": "Reconciliation is the process of comparing two records, such as a bank statement and the cash account, to find and explain differences."
   },
   {
     "id": 23,
-    "category": "Certificates",
-    "question": "Do I receive a certificate after finishing a course?",
-    "answer": "Eligible courses provide a digital certificate after you complete all required lessons and assessments. The course page states whether a certificate is included."
+    "category": "Bookkeeping and Transactions",
+    "question": "What is an audit trail?",
+    "answer": "An audit trail is a record showing how a transaction moved through a system, including its source documents, entries, approvals, and changes."
   },
   {
     "id": 24,
-    "category": "Certificates",
-    "question": "How do I download my certificate?",
-    "answer": "After completing an eligible course, open the course from your dashboard and select the certificate download option."
+    "category": "Accounts Receivable and Accounts Payable",
+    "question": "What are accounts receivable?",
+    "answer": "Accounts receivable are amounts customers owe a company for goods or services already provided on credit."
   },
   {
     "id": 25,
-    "category": "Certificates",
-    "question": "Can I share my certificate on LinkedIn?",
-    "answer": "Yes. You can download your certificate and add it to the Licenses and Certifications section of your LinkedIn profile."
+    "category": "Accounts Receivable and Accounts Payable",
+    "question": "What are accounts payable?",
+    "answer": "Accounts payable are amounts a company owes suppliers for goods or services it bought on credit."
   },
   {
     "id": 26,
-    "category": "Certificates",
-    "question": "Why is my certificate not available yet?",
-    "answer": "Check that every required lesson, quiz, and final assessment is marked complete. If everything is complete, refresh the course page or contact support."
+    "category": "Accounts Receivable and Accounts Payable",
+    "question": "What is an invoice?",
+    "answer": "An invoice is a document that requests payment and states what was sold, the amount due, payment terms, and the payment date."
   },
   {
     "id": 27,
-    "category": "Payments and Subscriptions",
-    "question": "What payment methods do you accept?",
-    "answer": "Available payment methods are shown during checkout and may include major credit or debit cards and other secure payment options."
+    "category": "Accounts Receivable and Accounts Payable",
+    "question": "What is a credit note?",
+    "answer": "A credit note is a document that reduces the amount a customer owes, often because goods were returned, a price was corrected, or a discount was granted."
   },
   {
     "id": 28,
-    "category": "Payments and Subscriptions",
-    "question": "How much does a subscription cost?",
-    "answer": "Subscription prices and billing options are displayed on the pricing page. The cost can differ by plan, billing period, and region."
+    "category": "Accounts Receivable and Accounts Payable",
+    "question": "What happens when a customer owes the company money?",
+    "answer": "The amount is recorded as accounts receivable. When the customer pays, cash increases and the receivable balance decreases."
   },
   {
     "id": 29,
-    "category": "Payments and Subscriptions",
-    "question": "Can I cancel my subscription?",
-    "answer": "Yes. Go to Account Settings, open Subscription, and choose Cancel Subscription. Your access continues until the end of the current billing period."
+    "category": "Accounts Receivable and Accounts Payable",
+    "question": "What happens when a company owes a supplier money?",
+    "answer": "The amount is recorded as accounts payable. When the company pays the supplier, cash decreases and the payable balance decreases."
   },
   {
     "id": 30,
-    "category": "Payments and Subscriptions",
-    "question": "Can I get a refund for a course?",
-    "answer": "Refund eligibility depends on the purchase date and the platform refund policy. Review the policy or contact support with your order details."
+    "category": "Accounts Receivable and Accounts Payable",
+    "question": "What is an accounts receivable aging report?",
+    "answer": "An accounts receivable aging report groups customer balances by how long they have been unpaid, helping a business follow up on overdue invoices."
   },
   {
     "id": 31,
-    "category": "Payments and Subscriptions",
-    "question": "Where can I find my payment receipt?",
-    "answer": "Open Account Settings and visit Billing History to view or download receipts for completed payments."
+    "category": "Inventory and Cost Accounting",
+    "question": "What is inventory?",
+    "answer": "Inventory is the goods a business holds for sale or uses to make products, such as merchandise, raw materials, and finished goods."
   },
   {
     "id": 32,
-    "category": "Payments and Subscriptions",
-    "question": "Why was my payment declined?",
-    "answer": "Check your card details, available funds, and bank approval. If the problem continues, try another payment method or contact your payment provider."
+    "category": "Inventory and Cost Accounting",
+    "question": "What is cost of goods sold?",
+    "answer": "Cost of goods sold, often called COGS, is the direct cost of the inventory a business sold during a period."
   },
   {
     "id": 33,
-    "category": "Account and Security",
-    "question": "I forgot my password. How can I reset it?",
-    "answer": "Select Forgot Password on the login page, enter your email address, and follow the password-reset link sent to your inbox."
+    "category": "Inventory and Cost Accounting",
+    "question": "What does FIFO mean in inventory accounting?",
+    "answer": "FIFO means first in, first out. It assumes the earliest inventory purchased is sold first when calculating cost of goods sold and ending inventory."
   },
   {
     "id": 34,
-    "category": "Account and Security",
-    "question": "How do I change my email address?",
-    "answer": "Go to Account Settings, edit your email address, and save the change. You may need to verify the new email address."
+    "category": "Inventory and Cost Accounting",
+    "question": "What is weighted average inventory or stock valuation?",
+    "answer": "Weighted average inventory valuation uses the average cost of similar inventory items to calculate the cost of goods sold and ending inventory."
   },
   {
     "id": 35,
-    "category": "Account and Security",
-    "question": "How do I change my password?",
-    "answer": "In Account Settings, open Security, enter your current password, choose a new password, and save the changes."
+    "category": "Inventory and Cost Accounting",
+    "question": "What is inventory turnover?",
+    "answer": "Inventory turnover measures how often a business sells and replaces its inventory during a period. Higher turnover can indicate faster sales, depending on the business."
   },
   {
     "id": 36,
-    "category": "Account and Security",
-    "question": "How can I delete my account?",
-    "answer": "Contact support from the Help section and request account deletion. The support team will explain the verification and data-removal process."
+    "category": "Inventory and Cost Accounting",
+    "question": "What is the difference between direct cost and indirect cost?",
+    "answer": "A direct cost can be traced to a specific product or service, such as materials. An indirect cost supports overall operations, such as factory rent or administration."
   },
   {
     "id": 37,
-    "category": "Account and Security",
-    "question": "Is my personal information secure?",
-    "answer": "The platform uses security practices to protect account information. Use a strong, unique password and never share your login details with others."
+    "category": "Inventory and Cost Accounting",
+    "question": "What is an inventory write-down?",
+    "answer": "An inventory write-down reduces the recorded value of inventory when it becomes damaged, obsolete, or worth less than its original cost."
   },
   {
     "id": 38,
-    "category": "Technical Support",
-    "question": "Which browsers are supported?",
-    "answer": "For the best experience, use a current version of Chrome, Edge, Firefox, or Safari with cookies and JavaScript enabled."
+    "category": "Finance and Business Metrics",
+    "question": "What is profit?",
+    "answer": "Profit is the amount remaining when a business subtracts its costs and expenses from its revenue."
   },
   {
     "id": 39,
-    "category": "Technical Support",
-    "question": "Why is a course video not playing?",
-    "answer": "Check your internet connection, refresh the page, and try a supported browser. Disabling browser extensions or clearing cached data can also help."
+    "category": "Finance and Business Metrics",
+    "question": "What is the difference between revenue and profit?",
+    "answer": "Revenue is the total income earned from sales before expenses. Profit is what remains after the business subtracts its costs and expenses from revenue."
   },
   {
     "id": 40,
-    "category": "Technical Support",
-    "question": "The website is loading slowly. What should I do?",
-    "answer": "Check your internet connection, refresh the page, close unused browser tabs, and try clearing your browser cache before contacting support."
+    "category": "Finance and Business Metrics",
+    "question": "What is gross margin?",
+    "answer": "Gross margin is gross profit expressed as a percentage of revenue. It shows how much of each sales amount remains after direct costs."
   },
   {
     "id": 41,
-    "category": "Technical Support",
-    "question": "Why can I not log in?",
-    "answer": "Confirm that you are using the correct email and password. If needed, reset your password and check whether your account activation email was confirmed."
+    "category": "Finance and Business Metrics",
+    "question": "What is return on investment or ROI?",
+    "answer": "Return on investment, or ROI, compares the gain or benefit from an investment with its cost. It is commonly used to evaluate whether an investment was worthwhile."
   },
   {
     "id": 42,
-    "category": "Technical Support",
-    "question": "How do I contact technical support?",
-    "answer": "Use the Help or Contact Support option on the platform. Include a clear description of the issue, any error message, and the browser or device you are using."
+    "category": "Finance and Business Metrics",
+    "question": "What is working capital?",
+    "answer": "Working capital is current assets minus current liabilities. It indicates whether a business has short-term resources to meet short-term obligations."
   },
   {
     "id": 43,
-    "category": "Technical Support",
-    "question": "How do I report a bug?",
-    "answer": "Send a bug report through the support form with steps to reproduce the issue, screenshots if possible, and details about your device and browser."
+    "category": "Finance and Business Metrics",
+    "question": "What is liquidity?",
+    "answer": "Liquidity is a business's ability to pay short-term obligations using cash or assets that can quickly be converted to cash."
   },
   {
     "id": 44,
-    "category": "Community and Instructors",
-    "question": "Can I interact with other learners?",
-    "answer": "Yes. Where enabled, course discussion spaces let you exchange questions, answers, and study tips with other learners."
+    "category": "Finance and Business Metrics",
+    "question": "Why can cash flow be different from profit?",
+    "answer": "Profit follows accounting rules that may record revenue or expenses before cash moves. Cash flow tracks actual cash received and paid, so the two amounts can differ."
   },
   {
     "id": 45,
-    "category": "Community and Instructors",
-    "question": "Can I contact the course instructor?",
-    "answer": "Some courses allow instructor questions through their discussion area. Availability and response times depend on the course instructor."
+    "category": "Finance and Business Metrics",
+    "question": "What is the break-even point?",
+    "answer": "The break-even point is the sales level where total revenue equals total costs, so the business makes neither a profit nor a loss."
   },
   {
     "id": 46,
-    "category": "Community and Instructors",
-    "question": "How do I become a course instructor?",
-    "answer": "Visit the Teach With Us page to review instructor requirements and submit an application or course proposal."
+    "category": "Budgeting and Forecasting",
+    "question": "What is a budget?",
+    "answer": "A budget is a financial plan that sets expected revenue, expenses, cash needs, or other targets for a future period."
   },
   {
     "id": 47,
-    "category": "Community and Instructors",
-    "question": "Are there rules for course discussions?",
-    "answer": "Yes. Learners should be respectful, stay relevant to the course, avoid sharing private information, and follow the community guidelines."
+    "category": "Budgeting and Forecasting",
+    "question": "What is a financial forecast?",
+    "answer": "A financial forecast is an updated estimate of future financial results based on current information, assumptions, and recent performance."
   },
   {
     "id": 48,
-    "category": "Learning Paths",
-    "question": "What is a learning path?",
-    "answer": "A learning path is an ordered group of courses designed to help you build knowledge in a specific area, such as data science or web development."
+    "category": "Budgeting and Forecasting",
+    "question": "What is variance analysis when actual results differ from budget?",
+    "answer": "Variance analysis compares actual results with a budget, forecast, or standard and investigates why the amounts differ."
   },
   {
     "id": 49,
-    "category": "Learning Paths",
-    "question": "How do I choose the right learning path?",
-    "answer": "Start with your goal and current experience level. Read the learning path description, course sequence, and prerequisites before enrolling."
+    "category": "Budgeting and Forecasting",
+    "question": "What is the difference between a budget and a forecast?",
+    "answer": "A budget is usually a planned target for a period, while a forecast is a revised estimate of what is likely to happen based on new information."
   },
   {
     "id": 50,
-    "category": "Learning Paths",
-    "question": "Can I complete courses in a learning path in any order?",
-    "answer": "You can usually access the courses after enrolling, but following the suggested order is recommended because later courses may build on earlier topics."
+    "category": "Budgeting and Forecasting",
+    "question": "What is a rolling forecast?",
+    "answer": "A rolling forecast is updated regularly by adding a new future period as the current period ends, keeping the planning horizon moving forward."
+  },
+  {
+    "id": 51,
+    "category": "ERP Fundamentals",
+    "question": "What is ERP?",
+    "answer": "ERP stands for enterprise resource planning. It is software that connects business processes and data in one integrated system."
+  },
+  {
+    "id": 52,
+    "category": "ERP Fundamentals",
+    "question": "Why do businesses use ERP systems?",
+    "answer": "Businesses use ERP systems to share data across departments, standardize processes, reduce duplicate work, and improve reporting and control."
+  },
+  {
+    "id": 53,
+    "category": "ERP Fundamentals",
+    "question": "What are ERP modules?",
+    "answer": "ERP modules are functional parts of an ERP system, such as finance, purchasing, sales, inventory, human resources, and manufacturing."
+  },
+  {
+    "id": 54,
+    "category": "ERP Fundamentals",
+    "question": "What is master data in an ERP system?",
+    "answer": "Master data is relatively stable reference information used repeatedly in an ERP, such as customer records, supplier records, products, and the chart of accounts."
+  },
+  {
+    "id": 55,
+    "category": "ERP Fundamentals",
+    "question": "What is transactional data in an ERP system?",
+    "answer": "Transactional data records business events that happen over time, such as sales orders, invoices, purchase orders, payments, and journal entries."
+  },
+  {
+    "id": 56,
+    "category": "ERP Fundamentals",
+    "question": "What is an ERP workflow?",
+    "answer": "An ERP workflow is the defined sequence of steps, approvals, and system actions used to complete a business process."
+  },
+  {
+    "id": 57,
+    "category": "ERP Fundamentals",
+    "question": "What is an ERP implementation?",
+    "answer": "An ERP implementation is the project of selecting, configuring, testing, and introducing an ERP system into an organization."
+  },
+  {
+    "id": 58,
+    "category": "ERP and Accounting",
+    "question": "What is a chart of accounts?",
+    "answer": "A chart of accounts is an organized list of the accounts a business uses to classify transactions, such as cash, sales revenue, rent expense, and accounts payable."
+  },
+  {
+    "id": 59,
+    "category": "ERP and Accounting",
+    "question": "What is a fiscal period?",
+    "answer": "A fiscal period is a defined reporting period used for accounting, such as a month, quarter, or financial year."
+  },
+  {
+    "id": 60,
+    "category": "ERP and Accounting",
+    "question": "How does an ERP record accounting transactions?",
+    "answer": "An ERP records transactions by capturing business events, applying configured accounting rules, and posting debits and credits to the appropriate accounts."
+  },
+  {
+    "id": 61,
+    "category": "ERP and Accounting",
+    "question": "What is automatic posting in ERP?",
+    "answer": "Automatic posting is when an ERP creates accounting entries automatically from a business transaction, such as posting inventory and payable entries from a goods receipt."
+  },
+  {
+    "id": 62,
+    "category": "ERP and Accounting",
+    "question": "What is financial reconciliation in ERP?",
+    "answer": "Financial reconciliation in ERP compares related records, such as a bank statement and cash account or a subledger and general ledger, to confirm they agree."
+  },
+  {
+    "id": 63,
+    "category": "ERP and Accounting",
+    "question": "What is an ERP financial module?",
+    "answer": "An ERP financial module manages accounting information such as the general ledger, accounts payable, accounts receivable, fixed assets, reporting, and period close."
+  },
+  {
+    "id": 64,
+    "category": "ERP and Accounting",
+    "question": "What is period close in an ERP system?",
+    "answer": "Period close is the process of reviewing, reconciling, adjusting, and locking accounting activity for a fiscal period so financial reports can be prepared."
+  },
+  {
+    "id": 65,
+    "category": "Business Processes",
+    "question": "What does P2P mean: the procure to pay process from buying goods to paying a supplier?",
+    "answer": "Procure-to-pay is the process from identifying a need and purchasing goods or services through receiving them, recording the supplier invoice, and paying the supplier."
+  },
+  {
+    "id": 66,
+    "category": "Business Processes",
+    "question": "What does O2C mean: the order to cash process from customer order to payment?",
+    "answer": "Order-to-cash is the process from receiving a customer order through delivery, invoicing, collecting payment, and recording the sale."
+  },
+  {
+    "id": 67,
+    "category": "Business Processes",
+    "question": "What does R2R mean: the record to report process for accounting reports?",
+    "answer": "Record-to-report is the accounting process of recording transactions, reconciling accounts, closing the period, and producing financial reports."
+  },
+  {
+    "id": 68,
+    "category": "Business Processes",
+    "question": "What happens from purchase order to supplier payment?",
+    "answer": "A typical process creates a purchase order, receives the goods or service, records and approves the supplier invoice, then pays the supplier according to payment terms."
+  },
+  {
+    "id": 69,
+    "category": "Business Processes",
+    "question": "What happens from customer order to customer payment?",
+    "answer": "A typical sales process receives the customer order, delivers goods or services, creates an invoice, records accounts receivable, and collects customer payment."
+  },
+  {
+    "id": 70,
+    "category": "Business Processes",
+    "question": "What is an approval workflow in a business process?",
+    "answer": "An approval workflow routes a transaction or request to authorized people for review and approval before the next process step can happen."
+  },
+  {
+    "id": 71,
+    "category": "Tax and VAT Fundamentals",
+    "question": "What is VAT?",
+    "answer": "VAT, or value-added tax, is a consumption tax generally charged on sales of goods and services. Rules and rates vary by jurisdiction."
+  },
+  {
+    "id": 72,
+    "category": "Tax and VAT Fundamentals",
+    "question": "What is input VAT?",
+    "answer": "Input VAT is VAT a business pays on eligible purchases. In many VAT systems, it may be offset against VAT collected on sales, subject to local rules."
+  },
+  {
+    "id": 73,
+    "category": "Tax and VAT Fundamentals",
+    "question": "What is output VAT?",
+    "answer": "Output VAT is VAT a business charges and collects from customers on its taxable sales, subject to the rules of the relevant jurisdiction."
+  },
+  {
+    "id": 74,
+    "category": "Tax and VAT Fundamentals",
+    "question": "What is the difference between tax inclusive and tax exclusive prices?",
+    "answer": "A tax-inclusive price already includes the tax amount. A tax-exclusive price shows the amount before tax, with tax added separately."
+  },
+  {
+    "id": 75,
+    "category": "Tax and VAT Fundamentals",
+    "question": "What is VAT reporting?",
+    "answer": "VAT reporting is the process of summarizing VAT charged on sales and VAT paid on purchases for a required reporting period. Requirements vary by jurisdiction."
+  },
+  {
+    "id": 76,
+    "category": "Accounting Fundamentals",
+    "question": "What does a company own?",
+    "answer": "A company owns assets: resources with value, such as cash, inventory, equipment, and amounts owed by customers."
+  },
+  {
+    "id": 77,
+    "category": "Accounting Fundamentals",
+    "question": "What does a company owe?",
+    "answer": "A company owes liabilities: obligations such as supplier bills, loans, salaries payable, and taxes payable."
+  },
+  {
+    "id": 78,
+    "category": "Business Processes",
+    "question": "What is P2P?",
+    "answer": "P2P means procure to pay, the business process from purchasing goods or services through paying the supplier."
+  },
+  {
+    "id": 79,
+    "category": "Business Processes",
+    "question": "What is O2C?",
+    "answer": "O2C means order to cash, the sales process from receiving a customer order through collecting the customer's payment."
+  },
+  {
+    "id": 80,
+    "category": "Business Processes",
+    "question": "What is R2R?",
+    "answer": "R2R means record to report, the accounting process from recording transactions through preparing financial reports."
   }
 ]
