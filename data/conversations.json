@@ -198,10 +198,28 @@
           "processed_query": "account receivable"
         },
         "timestamp": "9:26 AM"
+      },
+      {
+        "role": "user",
+        "content": "talk to me about financial statements",
+        "timestamp": "9:29 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "The balance sheet shows assets, liabilities, and equity. It describes the company's financial position at a point in time.",
+        "details": {
+          "response": "The balance sheet shows assets, liabilities, and equity. It describes the company's financial position at a point in time.",
+          "matched_question": "Which financial statement shows a company's assets and liabilities?",
+          "category": "Financial Statements",
+          "similarity_score": 0.5604874803212532,
+          "is_confident_match": true,
+          "processed_query": "talk financial statement"
+        },
+        "timestamp": "9:29 AM"
       }
     ],
     "created_at": "2026-09-22T08:20:13",
-    "updated_at": "2026-09-22T09:26:41"
+    "updated_at": "2026-09-22T09:29:13"
   },
   {
     "id": "e7f50acf-26f1-488a-aeee-3c96235ea043",

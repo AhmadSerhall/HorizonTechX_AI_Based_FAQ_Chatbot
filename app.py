@@ -202,6 +202,91 @@ CUSTOM_CSS = """
         min-width: unset;
         padding: 0.45rem 0.8rem;
     }
+
+    /* ---------- FinERP UI consistency pass ---------- */
+    :root {
+        --finerp-radius: 12px;
+        --finerp-chat-radius: 16px;
+        --finerp-control-size: 2.25rem;
+    }
+
+    /* Suggested questions: soft rounded rectangles instead of unrelated pills. */
+    div[class*="st-key-suggest_"] button,
+    div[class*="st-key-side_suggest_"] button {
+        border-radius: var(--finerp-radius) !important;
+    }
+
+    /* Conversation title rows use the same control radius. */
+    div[class*="st-key-conversation_"] button {
+        border-radius: var(--finerp-radius) !important;
+    }
+
+    /* Small controls share one size/radius language. */
+    div[class*="st-key-new_conversation"] button,
+    div[class*="st-key-delete_conversation_"] button {
+        width: var(--finerp-control-size) !important;
+        height: var(--finerp-control-size) !important;
+        min-height: var(--finerp-control-size) !important;
+        border-radius: 10px !important;
+    }
+
+    /* Keep chat bubbles conversational, but consistent with each other. */
+    div[data-testid="stChatMessage"]:has(span[data-testid="chatAvatarIcon-user"])
+        [data-testid="stChatMessageContent"] {
+        border-radius: var(--finerp-chat-radius) var(--finerp-chat-radius) 5px var(--finerp-chat-radius) !important;
+    }
+
+    div[data-testid="stChatMessage"]:has(span[data-testid="chatAvatarIcon-assistant"])
+        [data-testid="stChatMessageContent"] {
+        border-radius: var(--finerp-chat-radius) var(--finerp-chat-radius) var(--finerp-chat-radius) 5px !important;
+    }
+
+    /* Make assistant/user avatars readable and intentional. */
+    div[data-testid="stChatMessage"] [data-testid="stChatMessageAvatarUser"],
+    div[data-testid="stChatMessage"] [data-testid="stChatMessageAvatarAssistant"] {
+        width: 2.35rem !important;
+        height: 2.35rem !important;
+        min-width: 2.35rem !important;
+        border-radius: 10px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    div[data-testid="stChatMessage"] [data-testid="stChatMessageAvatarUser"] *,
+    div[data-testid="stChatMessage"] [data-testid="stChatMessageAvatarAssistant"] * {
+        font-size: 1.25rem !important;
+        line-height: 1 !important;
+    }
+
+    /* Composer styling: align its visual language with the rest of the app. */
+    div[data-testid="stChatInput"] {
+        border-radius: var(--finerp-radius) !important;
+    }
+
+    /* Compact microphone status that does not look like an error. */
+    .voice-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        color: #64748b;
+        font-size: 0.78rem;
+        margin: 0.15rem 0 0.35rem 0.25rem;
+    }
+
+    .voice-status-dot {
+        width: 0.45rem;
+        height: 0.45rem;
+        border-radius: 50%;
+        background: #64748b;
+        animation: voice-pulse 0.9s ease-in-out infinite alternate;
+    }
+
+    @keyframes voice-pulse {
+        from { opacity: 0.3; transform: scale(0.85); }
+        to { opacity: 1; transform: scale(1.15); }
+    }
+
 </style>
 """
 
@@ -316,6 +401,7 @@ def start_new_conversation():
     st.session_state.pending_query = None
     st.session_state.voice_transcript = ""
     st.session_state.voice_error = ""
+    st.session_state.voice_transcribing = False
     st.session_state.last_audio_id = None
     st.session_state.pending_composer_text = ""
     st.session_state.intro_animated = False
@@ -394,7 +480,7 @@ def render_scroll_controls(auto_scroll, show_button):
             button.textContent = "↓";
             button.title = "Scroll to latest message";
             button.setAttribute("aria-label", "Scroll to latest message");
-            button.style.cssText = "position:fixed;right:max(1rem, calc(50% - 37.5rem));bottom:8.75rem;z-index:1000;display:none;width:2rem;height:2rem;border:1px solid #cbd5e1;border-radius:50%;background:#ffffff;color:#475569;font-size:1.1rem;cursor:pointer;box-shadow:0 3px 10px rgba(15,23,42,.12);";
+            button.style.cssText = "position:fixed;right:max(1rem, calc(50% - 37.5rem));bottom:8.75rem;z-index:1000;display:none;width:2.25rem;height:2.25rem;border:1px solid #cbd5e1;border-radius:10px;background:#ffffff;color:#475569;font-size:1.05rem;cursor:pointer;box-shadow:0 3px 10px rgba(15,23,42,.12);transition:background .15s ease,transform .15s ease,box-shadow .15s ease;";
             parentDocument.body.appendChild(button);
         }}
 
@@ -435,6 +521,7 @@ def reset_conversation():
     st.session_state.pending_query = None
     st.session_state.voice_transcript = ""
     st.session_state.voice_error = ""
+    st.session_state.voice_transcribing = False
     st.session_state.last_audio_id = None
     st.session_state.intro_animated = False
     st.session_state.pending_composer_text = ""
@@ -615,6 +702,9 @@ for state_key, default_value in (
     ("pending_query", None),
     ("voice_transcript", ""),
     ("voice_error", ""),
+    ("voice_transcribing", False),
+    ("pending_audio_bytes", None),
+    ("pending_audio_name", None),
     ("last_audio_id", None),
     ("intro_animated", False),
     ("pending_composer_text", ""),
@@ -706,6 +796,13 @@ render_scroll_controls(
 )
 st.session_state.scroll_to_latest = False
 
+if st.session_state.voice_transcribing:
+    st.markdown(
+        '<div class="voice-status"><span class="voice-status-dot"></span>'
+        'Transcribing your recording…</div>',
+        unsafe_allow_html=True,
+    )
+
 if st.session_state.voice_error:
     st.caption(st.session_state.voice_error)
 
@@ -730,13 +827,38 @@ if chat_submission and not is_waiting_for_answer:
         recorded_audio = chat_submission.audio
         audio_id = f"{recorded_audio.name}-{recorded_audio.size}-{recorded_audio.type}"
         if audio_id != st.session_state.last_audio_id:
+            # Store the bytes first and rerun so the user gets immediate feedback
+            # instead of a visually frozen composer while Google STT is working.
             st.session_state.last_audio_id = audio_id
-            recognized_text, voice_error = transcribe_recorded_audio(recorded_audio)
-            st.session_state.voice_error = voice_error
-            st.session_state.voice_transcript = ""
-            if recognized_text:
-                st.session_state.pending_composer_text = recognized_text
+            st.session_state.pending_audio_bytes = recorded_audio.getvalue()
+            st.session_state.pending_audio_name = recorded_audio.name
+            st.session_state.voice_transcribing = True
+            st.session_state.voice_error = ""
             st.rerun()
+
+# Process a pending recording only after the "Transcribing…" state has painted.
+if st.session_state.get("voice_transcribing") and st.session_state.get("pending_audio_bytes"):
+    class _PendingAudio:
+        def __init__(self, data, name):
+            self._data = data
+            self.name = name
+        def getvalue(self):
+            return self._data
+
+    pending_audio = _PendingAudio(
+        st.session_state.pending_audio_bytes,
+        st.session_state.get("pending_audio_name", "recording.wav"),
+    )
+    recognized_text, voice_error = transcribe_recorded_audio(pending_audio)
+    st.session_state.voice_transcribing = False
+    st.session_state.voice_error = voice_error
+    st.session_state.voice_transcript = ""
+    st.session_state.pending_audio_bytes = None
+    st.session_state.pending_audio_name = None
+    if recognized_text:
+        # Put the transcript in the composer for review/editing; do not auto-send it.
+        st.session_state.pending_composer_text = recognized_text
+    st.rerun()
 
 if is_waiting_for_answer:
     time.sleep(TYPING_DELAY_SECONDS)
