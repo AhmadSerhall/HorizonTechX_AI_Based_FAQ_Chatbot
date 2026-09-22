@@ -1,5 +1,346 @@
 [
   {
+    "id": "ec4a4d0a-be9c-4c7f-ae2c-f5926428f370",
+    "title": "Income Statement That Shows Profit",
+    "messages": [
+      {
+        "role": "assistant",
+        "content": "Hi, I'm FinERP Learning Assistant.\n\nLearn accounting, finance and ERP concepts through simple questions.\n\nAsk me about accounting, finance, bookkeeping, financial statements, business processes, and ERP concepts.",
+        "details": null,
+        "timestamp": "11:20 AM"
+      },
+      {
+        "role": "user",
+        "content": "what is income statement that shows profit and loss",
+        "timestamp": "11:21 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "An income statement reports revenue, expenses, and profit or loss over a period of time. It is also called a profit and loss statement.",
+        "details": {
+          "response": "An income statement reports revenue, expenses, and profit or loss over a period of time. It is also called a profit and loss statement.",
+          "matched_question": "What is an income statement that shows profit or loss?",
+          "category": "Financial Statements",
+          "similarity_score": 1.0000000000000002,
+          "is_confident_match": true,
+          "related_questions": [
+            "Which financial statement shows a company's assets and liabilities?",
+            "What is operating income?",
+            "What is net income?"
+          ],
+          "processed_query": "income statement show profit loss",
+          "preprocessing_steps": {
+            "original": "what is income statement that shows profit and loss",
+            "lowercase": "what is income statement that shows profit and loss",
+            "tokens": [
+              "what",
+              "is",
+              "income",
+              "statement",
+              "that",
+              "shows",
+              "profit",
+              "and",
+              "loss"
+            ],
+            "meaningful_tokens": [
+              "what",
+              "is",
+              "income",
+              "statement",
+              "that",
+              "shows",
+              "profit",
+              "and",
+              "loss"
+            ],
+            "tokens_without_stopwords": [
+              "income",
+              "statement",
+              "shows",
+              "profit",
+              "loss"
+            ],
+            "lemmatized_tokens": [
+              "income",
+              "statement",
+              "show",
+              "profit",
+              "loss"
+            ],
+            "processed_text": "income statement show profit loss"
+          },
+          "keywords": [
+            "income",
+            "statement",
+            "show",
+            "profit",
+            "loss"
+          ],
+          "similarity_threshold": 0.5
+        },
+        "timestamp": "11:21 AM"
+      },
+      {
+        "role": "user",
+        "content": "What is net income?",
+        "timestamp": "11:22 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "Net income is the profit remaining after all expenses, including operating costs, interest, and taxes, are subtracted from revenue.",
+        "details": {
+          "response": "Net income is the profit remaining after all expenses, including operating costs, interest, and taxes, are subtracted from revenue.",
+          "matched_question": "What is net income?",
+          "category": "Financial Statements",
+          "similarity_score": 1.0000000000000002,
+          "is_confident_match": true,
+          "related_questions": [
+            "What is operating income?",
+            "What is an income statement that shows profit or loss?",
+            "What is a balance sheet?"
+          ],
+          "processed_query": "net income",
+          "preprocessing_steps": {
+            "original": "What is net income?",
+            "lowercase": "what is net income?",
+            "tokens": [
+              "what",
+              "is",
+              "net",
+              "income",
+              "?"
+            ],
+            "meaningful_tokens": [
+              "what",
+              "is",
+              "net",
+              "income"
+            ],
+            "tokens_without_stopwords": [
+              "net",
+              "income"
+            ],
+            "lemmatized_tokens": [
+              "net",
+              "income"
+            ],
+            "processed_text": "net income"
+          },
+          "keywords": [
+            "net",
+            "income"
+          ],
+          "similarity_threshold": 0.5
+        },
+        "timestamp": "11:22 AM"
+      },
+      {
+        "role": "user",
+        "content": "which statement shows company assets and liab",
+        "timestamp": "11:23 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "The balance sheet shows assets, liabilities, and equity. It describes the company's financial position at a point in time.",
+        "details": {
+          "response": "The balance sheet shows assets, liabilities, and equity. It describes the company's financial position at a point in time.",
+          "matched_question": "Which financial statement shows a company's assets and liabilities?",
+          "category": "Financial Statements",
+          "similarity_score": 0.813117803655591,
+          "is_confident_match": true,
+          "related_questions": [
+            "What is an income statement that shows profit or loss?",
+            "What is a cash flow statement?",
+            "What is a balance sheet?"
+          ],
+          "processed_query": "statement show company asset liab",
+          "preprocessing_steps": {
+            "original": "which statement shows company assets and liab",
+            "lowercase": "which statement shows company assets and liab",
+            "tokens": [
+              "which",
+              "statement",
+              "shows",
+              "company",
+              "assets",
+              "and",
+              "liab"
+            ],
+            "meaningful_tokens": [
+              "which",
+              "statement",
+              "shows",
+              "company",
+              "assets",
+              "and",
+              "liab"
+            ],
+            "tokens_without_stopwords": [
+              "statement",
+              "shows",
+              "company",
+              "assets",
+              "liab"
+            ],
+            "lemmatized_tokens": [
+              "statement",
+              "show",
+              "company",
+              "asset",
+              "liab"
+            ],
+            "processed_text": "statement show company asset liab"
+          },
+          "keywords": [
+            "statement",
+            "show",
+            "company",
+            "asset",
+            "liab"
+          ],
+          "similarity_threshold": 0.5
+        },
+        "timestamp": "11:23 AM"
+      },
+      {
+        "role": "user",
+        "content": "What is the difference between revenue and profit?",
+        "timestamp": "11:24 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "Revenue is the total income earned from sales before expenses. Profit is what remains after the business subtracts its costs and expenses from revenue.",
+        "details": {
+          "response": "Revenue is the total income earned from sales before expenses. Profit is what remains after the business subtracts its costs and expenses from revenue.",
+          "matched_question": "What is the difference between revenue and profit?",
+          "category": "Finance and Business Metrics",
+          "similarity_score": 1.0,
+          "is_confident_match": true,
+          "related_questions": [
+            "What is profit?",
+            "Why can cash flow be different from profit?",
+            "What is gross margin?"
+          ],
+          "processed_query": "difference revenue profit",
+          "preprocessing_steps": {
+            "original": "What is the difference between revenue and profit?",
+            "lowercase": "what is the difference between revenue and profit?",
+            "tokens": [
+              "what",
+              "is",
+              "the",
+              "difference",
+              "between",
+              "revenue",
+              "and",
+              "profit",
+              "?"
+            ],
+            "meaningful_tokens": [
+              "what",
+              "is",
+              "the",
+              "difference",
+              "between",
+              "revenue",
+              "and",
+              "profit"
+            ],
+            "tokens_without_stopwords": [
+              "difference",
+              "revenue",
+              "profit"
+            ],
+            "lemmatized_tokens": [
+              "difference",
+              "revenue",
+              "profit"
+            ],
+            "processed_text": "difference revenue profit"
+          },
+          "keywords": [
+            "difference",
+            "revenue",
+            "profit"
+          ],
+          "similarity_threshold": 0.5
+        },
+        "timestamp": "11:24 AM"
+      },
+      {
+        "role": "user",
+        "content": "which statements shows company assets and liabilities",
+        "timestamp": "11:24 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "The balance sheet shows assets, liabilities, and equity. It describes the company's financial position at a point in time.",
+        "details": {
+          "response": "The balance sheet shows assets, liabilities, and equity. It describes the company's financial position at a point in time.",
+          "matched_question": "Which financial statement shows a company's assets and liabilities?",
+          "category": "Financial Statements",
+          "similarity_score": 0.9229921699841312,
+          "is_confident_match": true,
+          "related_questions": [
+            "What is an income statement that shows profit or loss?",
+            "What is a cash flow statement?",
+            "What is a balance sheet?"
+          ],
+          "processed_query": "statement show company asset liability",
+          "preprocessing_steps": {
+            "original": "which statements shows company assets and liabilities",
+            "lowercase": "which statements shows company assets and liabilities",
+            "tokens": [
+              "which",
+              "statements",
+              "shows",
+              "company",
+              "assets",
+              "and",
+              "liabilities"
+            ],
+            "meaningful_tokens": [
+              "which",
+              "statements",
+              "shows",
+              "company",
+              "assets",
+              "and",
+              "liabilities"
+            ],
+            "tokens_without_stopwords": [
+              "statements",
+              "shows",
+              "company",
+              "assets",
+              "liabilities"
+            ],
+            "lemmatized_tokens": [
+              "statement",
+              "show",
+              "company",
+              "asset",
+              "liability"
+            ],
+            "processed_text": "statement show company asset liability"
+          },
+          "keywords": [
+            "statement",
+            "show",
+            "company",
+            "asset",
+            "liability"
+          ],
+          "similarity_threshold": 0.5
+        },
+        "timestamp": "11:24 AM"
+      }
+    ],
+    "created_at": "2026-09-22T11:21:55",
+    "updated_at": "2026-09-22T11:24:35"
+  },
+  {
     "id": "6b4f0576-e263-4a56-997f-4c297ccb3f05",
     "title": "Credit Note vs Debit Note",
     "messages": [
@@ -281,10 +622,265 @@
           "similarity_threshold": 0.5
         },
         "timestamp": "10:41 AM"
+      },
+      {
+        "role": "user",
+        "content": "which phone statements shows companies assets and liabilities",
+        "timestamp": "11:25 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "The balance sheet shows assets, liabilities, and equity. It describes the company's financial position at a point in time.",
+        "details": {
+          "response": "The balance sheet shows assets, liabilities, and equity. It describes the company's financial position at a point in time.",
+          "matched_question": "Which financial statement shows a company's assets and liabilities?",
+          "category": "Financial Statements",
+          "similarity_score": 0.9229921699841312,
+          "is_confident_match": true,
+          "related_questions": [
+            "What is an income statement that shows profit or loss?",
+            "What is a cash flow statement?",
+            "What is a balance sheet?"
+          ],
+          "processed_query": "phone statement show company asset liability",
+          "preprocessing_steps": {
+            "original": "which phone statements shows companies assets and liabilities",
+            "lowercase": "which phone statements shows companies assets and liabilities",
+            "tokens": [
+              "which",
+              "phone",
+              "statements",
+              "shows",
+              "companies",
+              "assets",
+              "and",
+              "liabilities"
+            ],
+            "meaningful_tokens": [
+              "which",
+              "phone",
+              "statements",
+              "shows",
+              "companies",
+              "assets",
+              "and",
+              "liabilities"
+            ],
+            "tokens_without_stopwords": [
+              "phone",
+              "statements",
+              "shows",
+              "companies",
+              "assets",
+              "liabilities"
+            ],
+            "lemmatized_tokens": [
+              "phone",
+              "statement",
+              "show",
+              "company",
+              "asset",
+              "liability"
+            ],
+            "processed_text": "phone statement show company asset liability"
+          },
+          "keywords": [
+            "phone",
+            "statement",
+            "show",
+            "company",
+            "asset",
+            "liability"
+          ],
+          "similarity_threshold": 0.5
+        },
+        "timestamp": "11:25 AM"
+      },
+      {
+        "role": "user",
+        "content": "What does P2P mean?",
+        "timestamp": "11:25 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "P2P means procure to pay, the business process from purchasing goods or services through paying the supplier.",
+        "details": {
+          "response": "P2P means procure to pay, the business process from purchasing goods or services through paying the supplier.",
+          "matched_question": "What is P2P?",
+          "category": "Business Processes",
+          "similarity_score": 0.750308440030206,
+          "is_confident_match": true,
+          "related_questions": [
+            "What does P2P mean: the procure to pay process from buying goods to paying a supplier?",
+            "What does O2C mean: the order to cash process from customer order to payment?",
+            "What does R2R mean: the record to report process for accounting reports?"
+          ],
+          "processed_query": "p2p mean",
+          "preprocessing_steps": {
+            "original": "What does P2P mean?",
+            "lowercase": "what does p2p mean?",
+            "tokens": [
+              "what",
+              "does",
+              "p2p",
+              "mean",
+              "?"
+            ],
+            "meaningful_tokens": [
+              "what",
+              "does",
+              "p2p",
+              "mean"
+            ],
+            "tokens_without_stopwords": [
+              "p2p",
+              "mean"
+            ],
+            "lemmatized_tokens": [
+              "p2p",
+              "mean"
+            ],
+            "processed_text": "p2p mean"
+          },
+          "keywords": [
+            "p2p",
+            "mean"
+          ],
+          "similarity_threshold": 0.5
+        },
+        "timestamp": "11:25 AM"
+      },
+      {
+        "role": "user",
+        "content": "What is the difference between revenue and profit?",
+        "timestamp": "11:26 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "Revenue is the total income earned from sales before expenses. Profit is what remains after the business subtracts its costs and expenses from revenue.",
+        "details": {
+          "response": "Revenue is the total income earned from sales before expenses. Profit is what remains after the business subtracts its costs and expenses from revenue.",
+          "matched_question": "What is the difference between revenue and profit?",
+          "category": "Finance and Business Metrics",
+          "similarity_score": 1.0,
+          "is_confident_match": true,
+          "related_questions": [
+            "What is profit?",
+            "Why can cash flow be different from profit?",
+            "What is gross margin?"
+          ],
+          "processed_query": "difference revenue profit",
+          "preprocessing_steps": {
+            "original": "What is the difference between revenue and profit?",
+            "lowercase": "what is the difference between revenue and profit?",
+            "tokens": [
+              "what",
+              "is",
+              "the",
+              "difference",
+              "between",
+              "revenue",
+              "and",
+              "profit",
+              "?"
+            ],
+            "meaningful_tokens": [
+              "what",
+              "is",
+              "the",
+              "difference",
+              "between",
+              "revenue",
+              "and",
+              "profit"
+            ],
+            "tokens_without_stopwords": [
+              "difference",
+              "revenue",
+              "profit"
+            ],
+            "lemmatized_tokens": [
+              "difference",
+              "revenue",
+              "profit"
+            ],
+            "processed_text": "difference revenue profit"
+          },
+          "keywords": [
+            "difference",
+            "revenue",
+            "profit"
+          ],
+          "similarity_threshold": 0.5
+        },
+        "timestamp": "11:26 AM"
+      },
+      {
+        "role": "user",
+        "content": "which statements shows assets and liabilities",
+        "timestamp": "11:26 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "The balance sheet shows assets, liabilities, and equity. It describes the company's financial position at a point in time.",
+        "details": {
+          "response": "The balance sheet shows assets, liabilities, and equity. It describes the company's financial position at a point in time.",
+          "matched_question": "Which financial statement shows a company's assets and liabilities?",
+          "category": "Financial Statements",
+          "similarity_score": 0.8592570692987362,
+          "is_confident_match": true,
+          "related_questions": [
+            "What is an income statement that shows profit or loss?",
+            "What is a cash flow statement?",
+            "What is a balance sheet?"
+          ],
+          "processed_query": "statement show asset liability",
+          "preprocessing_steps": {
+            "original": "which statements shows assets and liabilities",
+            "lowercase": "which statements shows assets and liabilities",
+            "tokens": [
+              "which",
+              "statements",
+              "shows",
+              "assets",
+              "and",
+              "liabilities"
+            ],
+            "meaningful_tokens": [
+              "which",
+              "statements",
+              "shows",
+              "assets",
+              "and",
+              "liabilities"
+            ],
+            "tokens_without_stopwords": [
+              "statements",
+              "shows",
+              "assets",
+              "liabilities"
+            ],
+            "lemmatized_tokens": [
+              "statement",
+              "show",
+              "asset",
+              "liability"
+            ],
+            "processed_text": "statement show asset liability"
+          },
+          "keywords": [
+            "statement",
+            "show",
+            "asset",
+            "liability"
+          ],
+          "similarity_threshold": 0.5
+        },
+        "timestamp": "11:26 AM"
       }
     ],
     "created_at": "2026-09-22T09:46:23",
-    "updated_at": "2026-09-22T11:04:57"
+    "updated_at": "2026-09-22T11:26:35"
   },
   {
     "id": "ad1435ed-200b-45c8-b5b1-d696b205cc28",
@@ -331,9 +927,82 @@
           "processed_query": "difference revenue profit"
         },
         "timestamp": "8:56 AM"
+      },
+      {
+        "role": "user",
+        "content": "which financial statements shows company assets and liabilities",
+        "timestamp": "11:27 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "The balance sheet shows assets, liabilities, and equity. It describes the company's financial position at a point in time.",
+        "details": {
+          "response": "The balance sheet shows assets, liabilities, and equity. It describes the company's financial position at a point in time.",
+          "matched_question": "Which financial statement shows a company's assets and liabilities?",
+          "category": "Financial Statements",
+          "similarity_score": 1.0000000000000002,
+          "is_confident_match": true,
+          "related_questions": [
+            "What is an income statement that shows profit or loss?",
+            "What is a cash flow statement?",
+            "What is a balance sheet?"
+          ],
+          "processed_query": "financial statement show company asset liability",
+          "preprocessing_steps": {
+            "original": "which financial statements shows company assets and liabilities",
+            "lowercase": "which financial statements shows company assets and liabilities",
+            "tokens": [
+              "which",
+              "financial",
+              "statements",
+              "shows",
+              "company",
+              "assets",
+              "and",
+              "liabilities"
+            ],
+            "meaningful_tokens": [
+              "which",
+              "financial",
+              "statements",
+              "shows",
+              "company",
+              "assets",
+              "and",
+              "liabilities"
+            ],
+            "tokens_without_stopwords": [
+              "financial",
+              "statements",
+              "shows",
+              "company",
+              "assets",
+              "liabilities"
+            ],
+            "lemmatized_tokens": [
+              "financial",
+              "statement",
+              "show",
+              "company",
+              "asset",
+              "liability"
+            ],
+            "processed_text": "financial statement show company asset liability"
+          },
+          "keywords": [
+            "financial",
+            "statement",
+            "show",
+            "company",
+            "asset",
+            "liability"
+          ],
+          "similarity_threshold": 0.5
+        },
+        "timestamp": "11:27 AM"
       }
     ],
     "created_at": "2026-09-22T08:33:09",
-    "updated_at": "2026-09-22T09:46:08"
+    "updated_at": "2026-09-22T11:27:37"
   }
 ]
