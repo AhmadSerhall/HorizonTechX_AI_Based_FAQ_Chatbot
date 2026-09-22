@@ -5,8 +5,6 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 
-
-# Each item maps NLTK's resource location to the package used to download it.
 NLTK_RESOURCES = {
     "tokenizers/punkt": "punkt",
     "tokenizers/punkt_tab": "punkt_tab",
@@ -26,7 +24,6 @@ def ensure_nltk_resources():
 
 
 ensure_nltk_resources()
-
 STOP_WORDS = set(stopwords.words("english"))
 LEMMATIZER = WordNetLemmatizer()
 
@@ -62,26 +59,25 @@ def get_preprocessing_steps(text):
         "meaningful_tokens": meaningful_tokens,
         "tokens_without_stopwords": tokens_without_stopwords,
         "lemmatized_tokens": lemmatized_tokens,
+        "processed_text": " ".join(lemmatized_tokens),
     }
 
 
 def preprocess_text(text):
     """Convert raw text into cleaned words joined by spaces for later TF-IDF use."""
-    steps = get_preprocessing_steps(text)
-    return " ".join(steps["lemmatized_tokens"])
+    return get_preprocessing_steps(text)["processed_text"]
 
 
 def print_preprocessing_steps(text):
     """Print a beginner-friendly view of each preprocessing stage."""
     steps = get_preprocessing_steps(text)
-
     print(f"Original sentence: {steps['original']}")
     print(f"Lowercase: {steps['lowercase']}")
     print(f"Tokenization: {steps['tokens']}")
     print(f"Remove punctuation/non-meaningful tokens: {steps['meaningful_tokens']}")
     print(f"Remove stopwords: {steps['tokens_without_stopwords']}")
     print(f"Lemmatization: {steps['lemmatized_tokens']}")
-    print(f"Final processed result: {' '.join(steps['lemmatized_tokens'])}")
+    print(f"Final processed result: {steps['processed_text']}")
 
 
 if __name__ == "__main__":
@@ -91,10 +87,8 @@ if __name__ == "__main__":
         "Why is the course video not playing?",
         "What payment methods do you accept?",
     ]
-
     print("Detailed example:\n")
     print_preprocessing_steps(example_sentences[0])
-
     print("\nAdditional examples:")
     for sentence in example_sentences[1:]:
         print(f"- {sentence} -> {preprocess_text(sentence)}")

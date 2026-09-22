@@ -15,7 +15,7 @@ from chatbot import FAQS, get_chatbot_response
 
 
 WELCOME_TITLE = "FinERP Learning Assistant"
-AI_ICON = "🤖"
+AI_ICON = "🧠"
 WELCOME_TAGLINE = (
     "Learn accounting, finance and ERP concepts through simple questions."
 )
@@ -216,9 +216,24 @@ CUSTOM_CSS = """
         border-radius: var(--finerp-radius) !important;
     }
 
-    /* Conversation title rows use the same control radius. */
+    /* Conversation title rows use the same control radius and align like a chat history. */
     div[class*="st-key-conversation_"] button {
         border-radius: var(--finerp-radius) !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+    }
+
+    div[class*="st-key-conversation_"] button p {
+        width: 100%;
+        text-align: left !important;
+    }
+
+    div[class*="st-key-related_question_"] button {
+        border-radius: var(--finerp-radius) !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
     }
 
     /* Small controls share one size/radius language. */
@@ -599,23 +614,56 @@ def transcribe_recorded_audio(audio_file):
 
 
 def show_match_details(details):
-    """Display optional developer information for one assistant response."""
+    """Display the NLP pipeline and matching decision for one response."""
     with st.expander("Match details"):
+        steps = details.get("preprocessing_steps") or {}
+        st.markdown("**NLTK processing stages**")
+        if steps:
+            st.write(f"**Original:** {steps.get('original', '')}")
+            st.write(f"**Lowercase:** {steps.get('lowercase', '')}")
+            st.write(f"**Tokens:** `{steps.get('tokens', [])}`")
+            st.write(f"**Meaningful tokens:** `{steps.get('meaningful_tokens', [])}`")
+            st.write(f"**After stopword removal:** `{steps.get('tokens_without_stopwords', [])}`")
+            st.write(f"**Lemmatized tokens:** `{steps.get('lemmatized_tokens', [])}`")
+
+        processed_query = details.get("processed_query", "")
+        st.write(f"**Final processed query:** `{processed_query}`" if processed_query else "**Final processed query:** *(empty)*")
+
+        keywords = details.get("keywords") or []
+        st.write(f"**Extracted keywords:** {', '.join(keywords) if keywords else 'None'}")
+        st.divider()
+        st.markdown("**TF-IDF match analysis**")
+
+        score = details.get("similarity_score")
+        threshold = details.get("similarity_threshold", 0.50)
         if details.get("is_confident_match"):
-            st.write(f"**Matched FAQ:** {details['matched_question']}")
-            st.write(f"**Category:** {details['category']}")
-            st.write(f"**Similarity score:** {details['similarity_score']:.2f}")
-        elif details.get("similarity_score") is None:
+            st.write(f"**Detected topic:** {details.get('category')}")
+            st.write(f"**Matched FAQ:** {details.get('matched_question')}")
+            st.write(f"**Similarity score:** {score:.2f}")
+            st.write(f"**Threshold:** {threshold:.2f}")
+            st.write("**Decision:** Accepted")
+        elif score is None:
             st.write("No match was calculated because the input was empty.")
         else:
-            st.write("No FAQ match passed the similarity threshold.")
-            st.write(f"**Highest similarity score:** {details['similarity_score']:.2f}")
+            st.write(f"**Highest similarity score:** {score:.2f}")
+            st.write(f"**Threshold:** {threshold:.2f}")
+            st.write("**Decision:** Rejected / fallback")
 
-        processed_query = details.get("processed_query")
-        if processed_query:
-            st.write(f"**Processed query:** `{processed_query}`")
-        elif details.get("similarity_score") is None or processed_query == "":
-            st.write("**Processed query:** *(empty after preprocessing)*")
+
+def render_related_questions(details, message_index, disabled):
+    """Render up to three related FAQ questions through the normal query pipeline."""
+    related_questions = details.get("related_questions") or []
+    if not related_questions:
+        return
+    st.caption("Related questions")
+    for related_index, question in enumerate(related_questions):
+        if st.button(
+            question,
+            key=f"related_question_{message_index}_{related_index}",
+            use_container_width=True,
+            disabled=disabled,
+        ):
+            queue_user_query(question)
 
 
 def render_message(message, message_index, show_match_details_enabled):
@@ -629,12 +677,14 @@ def render_message(message, message_index, show_match_details_enabled):
                 f'<div class="chat-meta">{timestamp}</div>',
                 unsafe_allow_html=True,
             )
-        if (
-            message["role"] == "assistant"
-            and show_match_details_enabled
-            and message.get("details") is not None
-        ):
-            show_match_details(message["details"])
+        if message["role"] == "assistant" and message.get("details") is not None:
+            if show_match_details_enabled:
+                show_match_details(message["details"])
+            render_related_questions(
+                message["details"],
+                message_index,
+                st.session_state.pending_query is not None,
+            )
 
 
 def render_suggested_questions(disabled, key_prefix):

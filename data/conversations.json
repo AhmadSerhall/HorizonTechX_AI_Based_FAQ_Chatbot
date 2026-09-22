@@ -1,5 +1,185 @@
 [
   {
+    "id": "6b4f0576-e263-4a56-997f-4c297ccb3f05",
+    "title": "Credit Note vs Debit Note",
+    "messages": [
+      {
+        "role": "assistant",
+        "content": "Hi, I'm FinERP Learning Assistant.\n\nLearn accounting, finance and ERP concepts through simple questions.\n\nAsk me about accounting, finance, bookkeeping, financial statements, business processes, and ERP concepts.",
+        "details": null,
+        "timestamp": "9:46 AM"
+      },
+      {
+        "role": "user",
+        "content": "what is the difference between credit note and debit note",
+        "timestamp": "9:46 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "A credit note is a document that reduces the amount a customer owes, often because goods were returned, a price was corrected, or a discount was granted.",
+        "details": {
+          "response": "A credit note is a document that reduces the amount a customer owes, often because goods were returned, a price was corrected, or a discount was granted.",
+          "matched_question": "What is a credit note?",
+          "category": "Accounts Receivable and Accounts Payable",
+          "similarity_score": 0.8258318476775146,
+          "is_confident_match": true,
+          "processed_query": "difference credit note debit note"
+        },
+        "timestamp": "9:46 AM"
+      },
+      {
+        "role": "user",
+        "content": "what is finance",
+        "timestamp": "10:00 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "I couldn't find a close enough FAQ for that question.\n\nTry asking about:\n\u2022 Accounting\n\u2022 Financial statements\n\u2022 Finance\n\u2022 ERP\n\u2022 Business processes\n\u2022 VAT fundamentals",
+        "details": {
+          "response": "I couldn't find a close enough FAQ for that question.\n\nTry asking about:\n\u2022 Accounting\n\u2022 Financial statements\n\u2022 Finance\n\u2022 ERP\n\u2022 Business processes\n\u2022 VAT fundamentals",
+          "matched_question": null,
+          "category": null,
+          "similarity_score": 0.0,
+          "is_confident_match": false,
+          "related_questions": [],
+          "processed_query": "finance",
+          "preprocessing_steps": {
+            "original": "what is finance",
+            "lowercase": "what is finance",
+            "tokens": [
+              "what",
+              "is",
+              "finance"
+            ],
+            "meaningful_tokens": [
+              "what",
+              "is",
+              "finance"
+            ],
+            "tokens_without_stopwords": [
+              "finance"
+            ],
+            "lemmatized_tokens": [
+              "finance"
+            ],
+            "processed_text": "finance"
+          },
+          "keywords": [
+            "finance"
+          ],
+          "similarity_threshold": 0.5
+        },
+        "timestamp": "10:00 AM"
+      },
+      {
+        "role": "user",
+        "content": "what is account payable",
+        "timestamp": "10:01 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "Accounts payable are amounts a company owes suppliers for goods or services it bought on credit.",
+        "details": {
+          "response": "Accounts payable are amounts a company owes suppliers for goods or services it bought on credit.",
+          "matched_question": "What are accounts payable?",
+          "category": "Accounts Receivable and Accounts Payable",
+          "similarity_score": 1.0000000000000002,
+          "is_confident_match": true,
+          "related_questions": [
+            "What are accounts receivable?",
+            "What is an accounts receivable aging report?",
+            "What is an invoice?"
+          ],
+          "processed_query": "account payable",
+          "preprocessing_steps": {
+            "original": "what is account payable",
+            "lowercase": "what is account payable",
+            "tokens": [
+              "what",
+              "is",
+              "account",
+              "payable"
+            ],
+            "meaningful_tokens": [
+              "what",
+              "is",
+              "account",
+              "payable"
+            ],
+            "tokens_without_stopwords": [
+              "account",
+              "payable"
+            ],
+            "lemmatized_tokens": [
+              "account",
+              "payable"
+            ],
+            "processed_text": "account payable"
+          },
+          "keywords": [
+            "account",
+            "payable"
+          ],
+          "similarity_threshold": 0.5
+        },
+        "timestamp": "10:01 AM"
+      },
+      {
+        "role": "user",
+        "content": "What is an invoice?",
+        "timestamp": "10:01 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "An invoice is a document that requests payment and states what was sold, the amount due, payment terms, and the payment date.",
+        "details": {
+          "response": "An invoice is a document that requests payment and states what was sold, the amount due, payment terms, and the payment date.",
+          "matched_question": "What is an invoice?",
+          "category": "Accounts Receivable and Accounts Payable",
+          "similarity_score": 1.0,
+          "is_confident_match": true,
+          "related_questions": [
+            "What are accounts receivable?",
+            "What are accounts payable?",
+            "What is a credit note?"
+          ],
+          "processed_query": "invoice",
+          "preprocessing_steps": {
+            "original": "What is an invoice?",
+            "lowercase": "what is an invoice?",
+            "tokens": [
+              "what",
+              "is",
+              "an",
+              "invoice",
+              "?"
+            ],
+            "meaningful_tokens": [
+              "what",
+              "is",
+              "an",
+              "invoice"
+            ],
+            "tokens_without_stopwords": [
+              "invoice"
+            ],
+            "lemmatized_tokens": [
+              "invoice"
+            ],
+            "processed_text": "invoice"
+          },
+          "keywords": [
+            "invoice"
+          ],
+          "similarity_threshold": 0.5
+        },
+        "timestamp": "10:01 AM"
+      }
+    ],
+    "created_at": "2026-09-22T09:46:23",
+    "updated_at": "2026-09-22T10:01:39"
+  },
+  {
     "id": "ad1435ed-200b-45c8-b5b1-d696b205cc28",
     "title": "Accounts Receivable",
     "messages": [
@@ -47,7 +227,7 @@
       }
     ],
     "created_at": "2026-09-22T08:33:09",
-    "updated_at": "2026-09-22T09:17:56"
+    "updated_at": "2026-09-22T09:46:08"
   },
   {
     "id": "bbda72da-c514-41d8-974d-6906253099b8",
@@ -80,146 +260,6 @@
     ],
     "created_at": "2026-09-22T08:23:50",
     "updated_at": "2026-09-22T08:36:16"
-  },
-  {
-    "id": "da6d5dde-fdd2-4861-a473-d3a1220679ea",
-    "title": "What is the difference between revenue and...",
-    "messages": [
-      {
-        "role": "assistant",
-        "content": "Hi, I'm FinERP Learning Assistant.\n\nLearn accounting, finance and ERP concepts through simple questions.\n\nAsk me about accounting, finance, bookkeeping, financial statements, business processes, and ERP concepts.",
-        "details": null,
-        "timestamp": "8:19 AM"
-      },
-      {
-        "role": "user",
-        "content": "What is the difference between revenue and profit?",
-        "timestamp": "8:20 AM"
-      },
-      {
-        "role": "assistant",
-        "content": "Revenue is the total income earned from sales before expenses. Profit is what remains after the business subtracts its costs and expenses from revenue.",
-        "details": {
-          "response": "Revenue is the total income earned from sales before expenses. Profit is what remains after the business subtracts its costs and expenses from revenue.",
-          "matched_question": "What is the difference between revenue and profit?",
-          "category": "Finance and Business Metrics",
-          "similarity_score": 1.0,
-          "is_confident_match": true,
-          "processed_query": "difference revenue profit"
-        },
-        "timestamp": "8:20 AM"
-      },
-      {
-        "role": "user",
-        "content": "talk to me about revenues",
-        "timestamp": "8:20 AM"
-      },
-      {
-        "role": "assistant",
-        "content": "Revenue is income earned from a business's normal activities, such as selling goods or providing services, before subtracting expenses.",
-        "details": {
-          "response": "Revenue is income earned from a business's normal activities, such as selling goods or providing services, before subtracting expenses.",
-          "matched_question": "What is revenue?",
-          "category": "Accounting Fundamentals",
-          "similarity_score": 1.0,
-          "is_confident_match": true,
-          "processed_query": "talk revenue"
-        },
-        "timestamp": "8:20 AM"
-      },
-      {
-        "role": "user",
-        "content": "what is account payable",
-        "timestamp": "8:21 AM"
-      },
-      {
-        "role": "assistant",
-        "content": "Accounts payable are amounts a company owes suppliers for goods or services it bought on credit.",
-        "details": {
-          "response": "Accounts payable are amounts a company owes suppliers for goods or services it bought on credit.",
-          "matched_question": "What are accounts payable?",
-          "category": "Accounts Receivable and Accounts Payable",
-          "similarity_score": 1.0000000000000002,
-          "is_confident_match": true,
-          "processed_query": "account payable"
-        },
-        "timestamp": "8:21 AM"
-      },
-      {
-        "role": "user",
-        "content": "What is the accounting equation?",
-        "timestamp": "8:34 AM"
-      },
-      {
-        "role": "assistant",
-        "content": "The accounting equation is Assets = Liabilities + Equity. It shows that the resources of a business are financed by borrowing, owner investment, or earned profits.",
-        "details": {
-          "response": "The accounting equation is Assets = Liabilities + Equity. It shows that the resources of a business are financed by borrowing, owner investment, or earned profits.",
-          "matched_question": "What is the accounting equation?",
-          "category": "Accounting Fundamentals",
-          "similarity_score": 1.0000000000000002,
-          "is_confident_match": true,
-          "processed_query": "accounting equation"
-        },
-        "timestamp": "8:34 AM"
-      },
-      {
-        "role": "user",
-        "content": "What are accounts receivable?",
-        "timestamp": "9:25 AM"
-      },
-      {
-        "role": "assistant",
-        "content": "Accounts receivable are amounts customers owe a company for goods or services already provided on credit.",
-        "details": {
-          "response": "Accounts receivable are amounts customers owe a company for goods or services already provided on credit.",
-          "matched_question": "What are accounts receivable?",
-          "category": "Accounts Receivable and Accounts Payable",
-          "similarity_score": 1.0,
-          "is_confident_match": true,
-          "processed_query": "account receivable"
-        },
-        "timestamp": "9:25 AM"
-      },
-      {
-        "role": "user",
-        "content": "what is account receivable",
-        "timestamp": "9:26 AM"
-      },
-      {
-        "role": "assistant",
-        "content": "Accounts receivable are amounts customers owe a company for goods or services already provided on credit.",
-        "details": {
-          "response": "Accounts receivable are amounts customers owe a company for goods or services already provided on credit.",
-          "matched_question": "What are accounts receivable?",
-          "category": "Accounts Receivable and Accounts Payable",
-          "similarity_score": 1.0,
-          "is_confident_match": true,
-          "processed_query": "account receivable"
-        },
-        "timestamp": "9:26 AM"
-      },
-      {
-        "role": "user",
-        "content": "talk to me about financial statements",
-        "timestamp": "9:29 AM"
-      },
-      {
-        "role": "assistant",
-        "content": "The balance sheet shows assets, liabilities, and equity. It describes the company's financial position at a point in time.",
-        "details": {
-          "response": "The balance sheet shows assets, liabilities, and equity. It describes the company's financial position at a point in time.",
-          "matched_question": "Which financial statement shows a company's assets and liabilities?",
-          "category": "Financial Statements",
-          "similarity_score": 0.5604874803212532,
-          "is_confident_match": true,
-          "processed_query": "talk financial statement"
-        },
-        "timestamp": "9:29 AM"
-      }
-    ],
-    "created_at": "2026-09-22T08:20:13",
-    "updated_at": "2026-09-22T09:29:13"
   },
   {
     "id": "e7f50acf-26f1-488a-aeee-3c96235ea043",
