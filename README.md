@@ -189,7 +189,6 @@ The interface also includes:
 
 - Animated assistant introduction
 - Typing indicator
-- User and assistant chat bubbles
 - Message timestamps
 - Suggested questions
 - Related-question expanders
@@ -611,16 +610,6 @@ These are intentionally left outside the current scope to keep the project focus
 
 ---
 
-## 👨‍💻 Author
-
-**Ahmad Serhal**
-
-Computer Science graduate, Full-Stack Web Developer, and Master's student in Artificial Intelligence.
-
-This project was developed as part of my **Artificial Intelligence Internship at Horizon TechX**.
-
----
-
 ## 📄 Internship Project
 
 **Organization:** Horizon TechX  
@@ -631,5 +620,3 @@ This project was developed as part of my **Artificial Intelligence Internship at
 **Core NLP Approach:** NLTK + TF-IDF + Cosine Similarity
 
 ---
-
-⭐ If you found this project useful, feel free to explore the repository and try the FinERP Learning Assistant.
