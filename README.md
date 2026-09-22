@@ -388,6 +388,78 @@ Related Questions
 
 ---
 
+## 🎥 Project Showcase
+
+### 🖥️ FinERP Learning Assistant
+
+FinERP provides a modern conversational interface for exploring **accounting, finance, bookkeeping, business processes, and ERP concepts** through an NLP-based FAQ retrieval system.
+
+<p align="center">
+  <img src="assets/images/overview.png" alt="FinERP Learning Assistant Overview" width="850">
+</p>
+
+---
+
+### 💬 Chatbot Workflow
+
+Users can ask questions naturally and receive the most relevant response from the FAQ knowledge base.
+
+The chatbot also recommends **Related Questions**, allowing users to continue exploring connected concepts directly from the conversation.
+
+<p align="center">
+  <img src="assets/gifs/workflow.gif" alt="FinERP Chatbot Workflow Demo" width="850">
+</p>
+
+---
+
+### 🎙️ Voice Input
+
+FinERP supports **speech-to-text input**, allowing users to ask questions using their microphone.
+
+The spoken question is converted into text and placed into the chat input, where it can be reviewed, edited, and submitted normally.
+
+<p align="center">
+  <img src="assets/gifs/microphone.gif" alt="FinERP Microphone and Speech-to-Text Demo" width="850">
+</p>
+
+---
+
+### 🧠 NLP Match Analysis
+
+The optional **Show match details** feature exposes the NLP pipeline behind each response for educational and debugging purposes.
+
+It displays:
+
+- Tokenization
+- Meaningful token filtering
+- Stopword removal
+- Lemmatization
+- Final processed query
+- Extracted keywords
+- Detected topic
+- Matched FAQ
+- TF-IDF cosine similarity score
+- Similarity threshold
+- Final accepted/rejected decision
+
+<p align="center">
+  <img src="assets/images/match-details.png" alt="FinERP NLP Match Details" width="850">
+</p>
+
+---
+
+### 🔗 Related Questions
+
+After a confident FAQ match, FinERP recommends related questions based on the **matched category and TF-IDF similarity**.
+
+Users can select one of these questions to immediately continue the conversation and explore related accounting, finance, or ERP concepts.
+
+<p align="center">
+  <img src="assets/images/related-questions.png" alt="FinERP Related Questions" width="850">
+</p>
+
+---
+
 ## 🚀 Running the Project Locally
 
 ### 1. Clone the repository
