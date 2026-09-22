@@ -10,15 +10,15 @@ from chatbot import FAQS, get_chatbot_response
 
 
 WELCOME_TITLE = "FinERP Learning Assistant"
+AI_ICON = "🤖"
 WELCOME_TAGLINE = (
     "Learn accounting, finance and ERP concepts through simple questions."
 )
 WELCOME_MESSAGE = (
-    f"{WELCOME_TITLE}\n\n"
+    "Hi, I'm FinERP Learning Assistant.\n\n"
     f"{WELCOME_TAGLINE}\n\n"
     "Ask me about accounting, finance, bookkeeping, financial statements, "
-    "business processes, and ERP concepts, or start with one of the "
-    "suggested questions below."
+    "business processes, and ERP concepts."
 )
 
 SUGGESTED_QUESTIONS = [
@@ -150,6 +150,7 @@ def reset_conversation():
     st.session_state.voice_transcript = ""
     st.session_state.voice_error = ""
     st.session_state.last_audio_id = None
+    st.session_state.intro_animated = False
 
 
 def is_welcome_only_chat():
@@ -243,7 +244,7 @@ def show_match_details(details):
 
 def render_message(message, message_index, show_match_details_enabled):
     """Render one chat bubble with optional timestamp and debug details."""
-    avatar = "📊" if message["role"] == "assistant" else "👤"
+    avatar = AI_ICON if message["role"] == "assistant" else "👤"
     with st.chat_message(message["role"], avatar=avatar):
         st.markdown(message["content"])
         timestamp = message.get("timestamp")
@@ -273,9 +274,33 @@ def render_suggested_questions(disabled, key_prefix):
             queue_user_query(question)
 
 
+def render_welcome_message(show_match_details_enabled):
+    """Show the first assistant message with a one-time typewriter effect."""
+    welcome_message = st.session_state.messages[0]
+    with st.chat_message("assistant", avatar=AI_ICON):
+        if not st.session_state.intro_animated:
+            message_placeholder = st.empty()
+            typed_text = ""
+            for character in WELCOME_MESSAGE:
+                typed_text += character
+                message_placeholder.markdown(f"{typed_text}▌")
+                time.sleep(0.008)
+            message_placeholder.markdown(WELCOME_MESSAGE)
+            st.session_state.intro_animated = True
+        else:
+            st.markdown(welcome_message["content"])
+
+        st.markdown(
+            f'<div class="chat-meta">{welcome_message["timestamp"]}</div>',
+            unsafe_allow_html=True,
+        )
+        if show_match_details_enabled and welcome_message.get("details") is not None:
+            show_match_details(welcome_message["details"])
+
+
 st.set_page_config(
     page_title="FinERP Learning Assistant",
-    page_icon="📊",
+    page_icon=AI_ICON,
     layout="centered",
 )
 
@@ -291,6 +316,7 @@ for state_key, default_value in (
     ("voice_transcript", ""),
     ("voice_error", ""),
     ("last_audio_id", None),
+    ("intro_animated", False),
 ):
     if state_key not in st.session_state:
         st.session_state[state_key] = default_value
@@ -334,31 +360,46 @@ with st.sidebar:
 st.title(WELCOME_TITLE)
 st.caption(WELCOME_TAGLINE)
 
-for index, message in enumerate(st.session_state.messages):
-    render_message(message, index, show_match_details_enabled)
+if is_welcome_only_chat():
+    render_welcome_message(show_match_details_enabled)
+else:
+    for index, message in enumerate(st.session_state.messages):
+        render_message(message, index, show_match_details_enabled)
 
 if is_waiting_for_answer:
-    with st.chat_message("assistant", avatar="📊"):
+    with st.chat_message("assistant", avatar=AI_ICON):
         st.markdown(TYPING_INDICATOR_HTML, unsafe_allow_html=True)
 
-if is_welcome_only_chat():
-    st.markdown("**Try a question**")
-    render_suggested_questions(False, "suggest")
+if st.session_state.voice_error:
+    st.caption(st.session_state.voice_error)
 
-with st.expander("Ask with microphone", expanded=bool(st.session_state.voice_transcript or st.session_state.voice_error)):
-    st.caption(
-        "Record a short question, review the recognized text, then send it. "
-        "The same FAQ matching pipeline answers it. If the browser blocks the "
-        "microphone, allow access or type your question instead."
-    )
-    recorded_audio = st.audio_input(
-        "Record a question",
-        sample_rate=16000,
-        disabled=is_waiting_for_answer,
-        label_visibility="collapsed",
-    )
+if st.session_state.voice_transcript:
+    transcript_column, send_column = st.columns([6, 1])
+    with transcript_column:
+        edited_transcript = st.text_input(
+            "Recognized question",
+            key="voice_transcript_editor",
+            label_visibility="collapsed",
+        )
+    with send_column:
+        if st.button("↑", help="Send recognized question"):
+            queue_user_query(edited_transcript)
 
-    if recorded_audio is not None and not is_waiting_for_answer:
+chat_submission = st.chat_input(
+    "Ask an accounting, finance, or ERP question...",
+    key="user_chat_input",
+    disabled=is_waiting_for_answer,
+    accept_audio=True,
+    audio_sample_rate=16000,
+)
+
+if chat_submission and not is_waiting_for_answer:
+    if isinstance(chat_submission, str):
+        queue_user_query(chat_submission)
+    elif chat_submission.text:
+        queue_user_query(chat_submission.text)
+    elif chat_submission.audio is not None:
+        recorded_audio = chat_submission.audio
         audio_id = f"{recorded_audio.name}-{recorded_audio.size}-{recorded_audio.type}"
         if audio_id != st.session_state.last_audio_id:
             st.session_state.last_audio_id = audio_id
@@ -367,34 +408,7 @@ with st.expander("Ask with microphone", expanded=bool(st.session_state.voice_tra
             st.session_state.voice_transcript = recognized_text or ""
             if recognized_text:
                 st.session_state.voice_transcript_editor = recognized_text
-                st.session_state.user_chat_input = recognized_text
             st.rerun()
-
-    if st.session_state.voice_error:
-        st.warning(st.session_state.voice_error)
-
-    if st.session_state.voice_transcript:
-        edited_transcript = st.text_area(
-            "Recognized question",
-            key="voice_transcript_editor",
-            height=80,
-        )
-        if st.button(
-            "Send recognized question",
-            use_container_width=True,
-            disabled=is_waiting_for_answer,
-        ):
-            queue_user_query(edited_transcript)
-
-chat_submission = st.chat_input(
-    "Ask an accounting, finance, or ERP question...",
-    key="user_chat_input",
-    disabled=is_waiting_for_answer,
-    accept_audio=False,
-)
-
-if chat_submission and not is_waiting_for_answer:
-    queue_user_query(chat_submission)
 
 if is_waiting_for_answer:
     time.sleep(TYPING_DELAY_SECONDS)
