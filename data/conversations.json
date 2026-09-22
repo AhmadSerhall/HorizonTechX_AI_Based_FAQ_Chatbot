@@ -1,0 +1,216 @@
+[
+  {
+    "id": "ad1435ed-200b-45c8-b5b1-d696b205cc28",
+    "title": "Accounts Receivable",
+    "messages": [
+      {
+        "role": "assistant",
+        "content": "Hi, I'm FinERP Learning Assistant.\n\nLearn accounting, finance and ERP concepts through simple questions.\n\nAsk me about accounting, finance, bookkeeping, financial statements, business processes, and ERP concepts.",
+        "details": null,
+        "timestamp": "8:33 AM"
+      },
+      {
+        "role": "user",
+        "content": "What are accounts receivable?",
+        "timestamp": "8:33 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "Accounts receivable are amounts customers owe a company for goods or services already provided on credit.",
+        "details": {
+          "response": "Accounts receivable are amounts customers owe a company for goods or services already provided on credit.",
+          "matched_question": "What are accounts receivable?",
+          "category": "Accounts Receivable and Accounts Payable",
+          "similarity_score": 1.0,
+          "is_confident_match": true,
+          "processed_query": "account receivable"
+        },
+        "timestamp": "8:33 AM"
+      }
+    ],
+    "created_at": "2026-09-22T08:33:09",
+    "updated_at": "2026-09-22T08:35:08"
+  },
+  {
+    "id": "45e01407-c4bb-4c89-8952-274021416c9d",
+    "title": "ERP",
+    "messages": [
+      {
+        "role": "assistant",
+        "content": "Hi, I'm FinERP Learning Assistant.\n\nLearn accounting, finance and ERP concepts through simple questions.\n\nAsk me about accounting, finance, bookkeeping, financial statements, business processes, and ERP concepts.",
+        "details": null,
+        "timestamp": "8:31 AM"
+      },
+      {
+        "role": "user",
+        "content": "What is ERP?",
+        "timestamp": "8:31 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "ERP stands for enterprise resource planning. It is software that connects business processes and data in one integrated system.",
+        "details": {
+          "response": "ERP stands for enterprise resource planning. It is software that connects business processes and data in one integrated system.",
+          "matched_question": "What is ERP?",
+          "category": "ERP Fundamentals",
+          "similarity_score": 1.0,
+          "is_confident_match": true,
+          "processed_query": "erp"
+        },
+        "timestamp": "8:31 AM"
+      }
+    ],
+    "created_at": "2026-09-22T08:31:47",
+    "updated_at": "2026-09-22T08:33:03"
+  },
+  {
+    "id": "bbda72da-c514-41d8-974d-6906253099b8",
+    "title": "What does P2P mean?",
+    "messages": [
+      {
+        "role": "assistant",
+        "content": "Hi, I'm FinERP Learning Assistant.\n\nLearn accounting, finance and ERP concepts through simple questions.\n\nAsk me about accounting, finance, bookkeeping, financial statements, business processes, and ERP concepts.",
+        "details": null,
+        "timestamp": "8:23 AM"
+      },
+      {
+        "role": "user",
+        "content": "What does P2P mean?",
+        "timestamp": "8:23 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "P2P means procure to pay, the business process from purchasing goods or services through paying the supplier.",
+        "details": {
+          "response": "P2P means procure to pay, the business process from purchasing goods or services through paying the supplier.",
+          "matched_question": "What is P2P?",
+          "category": "Business Processes",
+          "similarity_score": 0.750308440030206,
+          "is_confident_match": true,
+          "processed_query": "p2p mean"
+        },
+        "timestamp": "8:23 AM"
+      }
+    ],
+    "created_at": "2026-09-22T08:23:50",
+    "updated_at": "2026-09-22T08:31:30"
+  },
+  {
+    "id": "da6d5dde-fdd2-4861-a473-d3a1220679ea",
+    "title": "What is the difference between revenue and...",
+    "messages": [
+      {
+        "role": "assistant",
+        "content": "Hi, I'm FinERP Learning Assistant.\n\nLearn accounting, finance and ERP concepts through simple questions.\n\nAsk me about accounting, finance, bookkeeping, financial statements, business processes, and ERP concepts.",
+        "details": null,
+        "timestamp": "8:19 AM"
+      },
+      {
+        "role": "user",
+        "content": "What is the difference between revenue and profit?",
+        "timestamp": "8:20 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "Revenue is the total income earned from sales before expenses. Profit is what remains after the business subtracts its costs and expenses from revenue.",
+        "details": {
+          "response": "Revenue is the total income earned from sales before expenses. Profit is what remains after the business subtracts its costs and expenses from revenue.",
+          "matched_question": "What is the difference between revenue and profit?",
+          "category": "Finance and Business Metrics",
+          "similarity_score": 1.0,
+          "is_confident_match": true,
+          "processed_query": "difference revenue profit"
+        },
+        "timestamp": "8:20 AM"
+      },
+      {
+        "role": "user",
+        "content": "talk to me about revenues",
+        "timestamp": "8:20 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "Revenue is income earned from a business's normal activities, such as selling goods or providing services, before subtracting expenses.",
+        "details": {
+          "response": "Revenue is income earned from a business's normal activities, such as selling goods or providing services, before subtracting expenses.",
+          "matched_question": "What is revenue?",
+          "category": "Accounting Fundamentals",
+          "similarity_score": 1.0,
+          "is_confident_match": true,
+          "processed_query": "talk revenue"
+        },
+        "timestamp": "8:20 AM"
+      },
+      {
+        "role": "user",
+        "content": "what is account payable",
+        "timestamp": "8:21 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "Accounts payable are amounts a company owes suppliers for goods or services it bought on credit.",
+        "details": {
+          "response": "Accounts payable are amounts a company owes suppliers for goods or services it bought on credit.",
+          "matched_question": "What are accounts payable?",
+          "category": "Accounts Receivable and Accounts Payable",
+          "similarity_score": 1.0000000000000002,
+          "is_confident_match": true,
+          "processed_query": "account payable"
+        },
+        "timestamp": "8:21 AM"
+      },
+      {
+        "role": "user",
+        "content": "What is the accounting equation?",
+        "timestamp": "8:34 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "The accounting equation is Assets = Liabilities + Equity. It shows that the resources of a business are financed by borrowing, owner investment, or earned profits.",
+        "details": {
+          "response": "The accounting equation is Assets = Liabilities + Equity. It shows that the resources of a business are financed by borrowing, owner investment, or earned profits.",
+          "matched_question": "What is the accounting equation?",
+          "category": "Accounting Fundamentals",
+          "similarity_score": 1.0000000000000002,
+          "is_confident_match": true,
+          "processed_query": "accounting equation"
+        },
+        "timestamp": "8:34 AM"
+      }
+    ],
+    "created_at": "2026-09-22T08:20:13",
+    "updated_at": "2026-09-22T08:34:14"
+  },
+  {
+    "id": "e7f50acf-26f1-488a-aeee-3c96235ea043",
+    "title": "What is ERP?",
+    "messages": [
+      {
+        "role": "assistant",
+        "content": "Hi, I'm FinERP Learning Assistant.\n\nLearn accounting, finance and ERP concepts through simple questions.\n\nAsk me about accounting, finance, bookkeeping, financial statements, business processes, and ERP concepts.",
+        "details": null,
+        "timestamp": "8:17 AM"
+      },
+      {
+        "role": "user",
+        "content": "What is ERP?",
+        "timestamp": "8:18 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "ERP stands for enterprise resource planning. It is software that connects business processes and data in one integrated system.",
+        "details": {
+          "response": "ERP stands for enterprise resource planning. It is software that connects business processes and data in one integrated system.",
+          "matched_question": "What is ERP?",
+          "category": "ERP Fundamentals",
+          "similarity_score": 1.0,
+          "is_confident_match": true,
+          "processed_query": "erp"
+        },
+        "timestamp": "8:18 AM"
+      }
+    ],
+    "created_at": "2026-09-22T08:18:00",
+    "updated_at": "2026-09-22T08:19:28"
+  }
+]

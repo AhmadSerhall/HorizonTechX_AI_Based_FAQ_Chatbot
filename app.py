@@ -1,10 +1,15 @@
 """Streamlit interface for the FinERP Learning Assistant."""
 
 import io
+import json
+import re
 import time
+import uuid
 from datetime import datetime
+from pathlib import Path
 
 import streamlit as st
+import streamlit.components.v1 as components
 
 from chatbot import FAQS, get_chatbot_response
 
@@ -33,6 +38,7 @@ TYPING_DELAY_SECONDS = 1.0
 FAQ_COUNT = len(FAQS)
 TOPIC_NAMES = sorted({faq["category"] for faq in FAQS})
 TOPIC_COUNT = len(TOPIC_NAMES)
+CONVERSATIONS_FILE = Path(__file__).parent / "data" / "conversations.json"
 
 CUSTOM_CSS = """
 <style>
@@ -121,6 +127,16 @@ CUSTOM_CSS = """
         font-size: 0.86rem;
         line-height: 1.45;
     }
+
+    div[class*="st-key-conversation_new_"] button {
+        animation: title-reveal 0.5s steps(20, end) both;
+        transform-origin: left center;
+    }
+
+    @keyframes title-reveal {
+        from { clip-path: inset(0 100% 0 0); opacity: 0; }
+        to { clip-path: inset(0 0 0 0); opacity: 1; }
+    }
 </style>
 """
 
@@ -134,6 +150,156 @@ TYPING_INDICATOR_HTML = """
 def current_timestamp():
     """Return a compact local time label such as 10:42 PM."""
     return datetime.now().strftime("%I:%M %p").lstrip("0")
+
+
+def current_datetime():
+    """Return a simple local timestamp for saved conversation metadata."""
+    return datetime.now().isoformat(timespec="seconds")
+
+
+def load_conversations():
+    """Load local conversation history without failing on a missing file."""
+    if not CONVERSATIONS_FILE.exists():
+        return []
+    try:
+        with open(CONVERSATIONS_FILE, "r", encoding="utf-8") as file:
+            conversations = json.load(file)
+        return conversations if isinstance(conversations, list) else []
+    except (json.JSONDecodeError, OSError):
+        return []
+
+
+def write_conversations():
+    """Persist the in-memory conversation list only after it changes."""
+    CONVERSATIONS_FILE.parent.mkdir(exist_ok=True)
+    with open(CONVERSATIONS_FILE, "w", encoding="utf-8") as file:
+        json.dump(st.session_state.conversations, file, indent=2)
+
+
+def conversation_title(question):
+    """Create a compact domain title from the first user question."""
+    cleaned_question = re.sub(r"[^A-Za-z0-9\s]", " ", question).lower()
+    cleaned_question = " ".join(cleaned_question.split())
+
+    def format_words(words):
+        abbreviations = {"erp", "p2p", "o2c", "r2r", "fifo", "vat"}
+        return " ".join(
+            word.upper() if word in abbreviations else word.capitalize()
+            for word in words
+        )
+
+    if "difference between" in cleaned_question:
+        comparison = cleaned_question.split("difference between", 1)[1]
+        if " and " in comparison:
+            left, right = comparison.split(" and ", 1)
+            title = f"{format_words(left.split())} vs {format_words(right.split())}"
+            return title[:35].rstrip()
+
+    filler_words = {
+        "what", "is", "are", "can", "you", "explain", "tell", "me", "about",
+        "how", "does", "do", "work", "mean", "please", "the", "a", "an", "to",
+    }
+    important_words = [
+        word for word in cleaned_question.split() if word not in filler_words
+    ]
+    title = format_words(important_words[:5]) or "New Conversation"
+    return title[:35].rstrip()
+
+
+def save_active_conversation():
+    """Save the selected conversation after a user or assistant message changes it."""
+    user_messages = [
+        message for message in st.session_state.messages if message["role"] == "user"
+    ]
+    if not user_messages:
+        return
+
+    updated_at = current_datetime()
+    active_id = st.session_state.active_conversation_id
+    for conversation in st.session_state.conversations:
+        if conversation["id"] == active_id:
+            conversation["messages"] = list(st.session_state.messages)
+            if conversation["title"] == "New Conversation":
+                conversation["title"] = conversation_title(user_messages[0]["content"])
+                st.session_state.title_animation_id = active_id
+            conversation["updated_at"] = updated_at
+            write_conversations()
+            return
+
+    st.session_state.conversations.insert(
+        0,
+        {
+            "id": active_id,
+            "title": conversation_title(user_messages[0]["content"]),
+            "messages": list(st.session_state.messages),
+            "created_at": updated_at,
+            "updated_at": updated_at,
+        },
+    )
+    st.session_state.title_animation_id = active_id
+    write_conversations()
+
+
+def start_new_conversation():
+    """Select a fresh local conversation without deleting previous history."""
+    save_active_conversation()
+    st.session_state.active_conversation_id = str(uuid.uuid4())
+    reset_conversation()
+    st.session_state.title_animation_id = None
+    st.session_state.scroll_to_latest = True
+
+
+def switch_conversation(conversation):
+    """Load one saved conversation into the existing chat UI."""
+    st.session_state.active_conversation_id = conversation["id"]
+    st.session_state.messages = list(conversation["messages"])
+    st.session_state.pending_query = None
+    st.session_state.intro_animated = True
+    st.session_state.scroll_to_latest = True
+
+
+def render_scroll_controls(auto_scroll):
+    """Add a small browser-side latest-message anchor and down-arrow control."""
+    st.markdown('<div id="chat-bottom"></div>', unsafe_allow_html=True)
+    components.html(
+        f"""
+        <script>
+        const parentWindow = window.parent;
+        const parentDocument = parentWindow.document;
+        const anchor = parentDocument.getElementById("chat-bottom");
+        let button = parentDocument.getElementById("finerp-scroll-latest");
+
+        if (!button) {{
+            button = parentDocument.createElement("button");
+            button.id = "finerp-scroll-latest";
+            button.type = "button";
+            button.textContent = "↓";
+            button.title = "Scroll to latest message";
+            button.setAttribute("aria-label", "Scroll to latest message");
+            button.style.cssText = "position:fixed;right:1.5rem;bottom:5.75rem;z-index:1000;display:none;width:2rem;height:2rem;border:1px solid #cbd5e1;border-radius:50%;background:#ffffff;color:#475569;font-size:1.1rem;cursor:pointer;box-shadow:0 3px 10px rgba(15,23,42,.12);";
+            parentDocument.body.appendChild(button);
+        }}
+
+        const updateButton = () => {{
+            const distanceFromBottom = parentDocument.documentElement.scrollHeight - parentWindow.innerHeight - parentWindow.scrollY;
+            button.style.display = distanceFromBottom > 140 ? "flex" : "none";
+            button.style.alignItems = "center";
+            button.style.justifyContent = "center";
+        }};
+
+        button.onclick = () => anchor?.scrollIntoView({{ behavior: "smooth", block: "end" }});
+        if (!parentWindow.finerpScrollListenerAdded) {{
+            parentWindow.addEventListener("scroll", updateButton, {{ passive: true }});
+            parentWindow.finerpScrollListenerAdded = true;
+        }}
+        updateButton();
+        if ({str(auto_scroll).lower()}) {{
+            requestAnimationFrame(() => anchor?.scrollIntoView({{ behavior: "smooth", block: "end" }}));
+        }}
+        </script>
+        """,
+        height=0,
+    )
 
 
 def reset_conversation():
@@ -151,6 +317,7 @@ def reset_conversation():
     st.session_state.voice_error = ""
     st.session_state.last_audio_id = None
     st.session_state.intro_animated = False
+    st.session_state.pending_composer_text = ""
 
 
 def is_welcome_only_chat():
@@ -175,6 +342,8 @@ def queue_user_query(user_query):
     st.session_state.pending_query = cleaned_query or user_query
     st.session_state.voice_transcript = ""
     st.session_state.voice_error = ""
+    st.session_state.scroll_to_latest = True
+    save_active_conversation()
     st.rerun()
 
 
@@ -304,12 +473,23 @@ st.set_page_config(
     layout="centered",
 )
 
-if (
-    "messages" not in st.session_state
-    or st.session_state.get("chatbot_domain") != "finerp"
-):
-    reset_conversation()
+if "conversations" not in st.session_state:
+    st.session_state.conversations = load_conversations()
+
+if st.session_state.get("chatbot_domain") != "finerp":
     st.session_state.chatbot_domain = "finerp"
+
+if "active_conversation_id" not in st.session_state:
+    if st.session_state.conversations:
+        switch_conversation(st.session_state.conversations[0])
+    elif "messages" in st.session_state and any(
+        message["role"] == "user" for message in st.session_state.messages
+    ):
+        st.session_state.active_conversation_id = str(uuid.uuid4())
+        save_active_conversation()
+    else:
+        reset_conversation()
+        st.session_state.active_conversation_id = str(uuid.uuid4())
 
 for state_key, default_value in (
     ("pending_query", None),
@@ -317,6 +497,9 @@ for state_key, default_value in (
     ("voice_error", ""),
     ("last_audio_id", None),
     ("intro_animated", False),
+    ("pending_composer_text", ""),
+    ("scroll_to_latest", False),
+    ("title_animation_id", None),
 ):
     if state_key not in st.session_state:
         st.session_state[state_key] = default_value
@@ -343,19 +526,33 @@ with st.sidebar:
         help="Optional NLP demo view: matched FAQ, category, similarity score, and processed query.",
     )
 
-    if st.button("New conversation", use_container_width=True):
-        reset_conversation()
-        st.rerun()
+    conversation_heading, new_conversation_control = st.columns([5, 1])
+    with conversation_heading:
+        st.subheader("Conversations")
+    with new_conversation_control:
+        if st.button("+", key="new_conversation", help="New conversation"):
+            start_new_conversation()
+            st.rerun()
 
-    st.divider()
-    st.markdown(
-        f'<div class="sidebar-stat">'
-        f"<b>{FAQ_COUNT} FAQs</b><br>"
-        f"{TOPIC_COUNT} topics<br>"
-        f"TF-IDF + Cosine Similarity"
-        f"</div>",
-        unsafe_allow_html=True,
-    )
+    if st.session_state.conversations:
+        for conversation in st.session_state.conversations[:8]:
+            is_new_title = (
+                conversation["id"] == st.session_state.title_animation_id
+            )
+            if st.button(
+                conversation["title"],
+                key=(
+                    f"conversation_new_{conversation['id']}"
+                    if is_new_title
+                    else f"conversation_{conversation['id']}"
+                ),
+                use_container_width=True,
+            ):
+                switch_conversation(conversation)
+                st.rerun()
+
+            if is_new_title:
+                st.session_state.title_animation_id = None
 
 st.title(WELCOME_TITLE)
 st.caption(WELCOME_TAGLINE)
@@ -370,20 +567,15 @@ if is_waiting_for_answer:
     with st.chat_message("assistant", avatar=AI_ICON):
         st.markdown(TYPING_INDICATOR_HTML, unsafe_allow_html=True)
 
+render_scroll_controls(st.session_state.scroll_to_latest)
+st.session_state.scroll_to_latest = False
+
 if st.session_state.voice_error:
     st.caption(st.session_state.voice_error)
 
-if st.session_state.voice_transcript:
-    transcript_column, send_column = st.columns([6, 1])
-    with transcript_column:
-        edited_transcript = st.text_input(
-            "Recognized question",
-            key="voice_transcript_editor",
-            label_visibility="collapsed",
-        )
-    with send_column:
-        if st.button("↑", help="Send recognized question"):
-            queue_user_query(edited_transcript)
+if st.session_state.pending_composer_text:
+    st.session_state.user_chat_input = st.session_state.pending_composer_text
+    st.session_state.pending_composer_text = ""
 
 chat_submission = st.chat_input(
     "Ask an accounting, finance, or ERP question...",
@@ -405,9 +597,9 @@ if chat_submission and not is_waiting_for_answer:
             st.session_state.last_audio_id = audio_id
             recognized_text, voice_error = transcribe_recorded_audio(recorded_audio)
             st.session_state.voice_error = voice_error
-            st.session_state.voice_transcript = recognized_text or ""
+            st.session_state.voice_transcript = ""
             if recognized_text:
-                st.session_state.voice_transcript_editor = recognized_text
+                st.session_state.pending_composer_text = recognized_text
             st.rerun()
 
 if is_waiting_for_answer:
@@ -436,4 +628,6 @@ if is_waiting_for_answer:
         }
     )
     st.session_state.pending_query = None
+    st.session_state.scroll_to_latest = True
+    save_active_conversation()
     st.rerun()
