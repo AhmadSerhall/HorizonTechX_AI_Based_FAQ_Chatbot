@@ -133,6 +133,11 @@ CUSTOM_CSS = """
         transform-origin: left center;
     }
 
+    div[class*="st-key-conversation_active_new_"] button {
+        animation: title-reveal 0.5s steps(20, end) both;
+        transform-origin: left center;
+    }
+
     @keyframes title-reveal {
         from { clip-path: inset(0 100% 0 0); opacity: 0; }
         to { clip-path: inset(0 0 0 0); opacity: 1; }
@@ -237,6 +242,25 @@ div[class*="st-key-conversation_new_"] button p {
     width: 100% !important;
     margin: 0 !important;
     text-align: left !important;
+}
+
+/* Currently selected conversation */
+div[class*="st-key-conversation_active_"] button {
+    background: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* Keep the selected conversation visually stable on hover */
+div[class*="st-key-conversation_active_"] button:hover {
+    background: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+    outline: none !important;
+    transform: none !important;
 }
 
     div[class*="st-key-related_question_"] button {
@@ -819,13 +843,22 @@ with st.sidebar:
             )
             title_column, delete_column = st.columns([6, 1])
             with title_column:
+                is_active = (
+                    conversation["id"] == st.session_state.active_conversation_id
+                )
+
+                if is_active and is_new_title:
+                    conversation_key = f"conversation_active_new_{conversation['id']}"
+                elif is_active:
+                    conversation_key = f"conversation_active_{conversation['id']}"
+                elif is_new_title:
+                    conversation_key = f"conversation_new_{conversation['id']}"
+                else:
+                    conversation_key = f"conversation_{conversation['id']}"
+
                 if st.button(
                     conversation["title"],
-                    key=(
-                        f"conversation_new_{conversation['id']}"
-                        if is_new_title
-                        else f"conversation_{conversation['id']}"
-                    ),
+                    key=conversation_key,
                     use_container_width=True,
                 ):
                     switch_conversation(conversation)

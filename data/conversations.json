@@ -174,10 +174,117 @@
           "similarity_threshold": 0.5
         },
         "timestamp": "10:01 AM"
+      },
+      {
+        "role": "user",
+        "content": "What is an invoice?",
+        "timestamp": "10:13 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "An invoice is a document that requests payment and states what was sold, the amount due, payment terms, and the payment date.",
+        "details": {
+          "response": "An invoice is a document that requests payment and states what was sold, the amount due, payment terms, and the payment date.",
+          "matched_question": "What is an invoice?",
+          "category": "Accounts Receivable and Accounts Payable",
+          "similarity_score": 1.0,
+          "is_confident_match": true,
+          "related_questions": [
+            "What are accounts receivable?",
+            "What are accounts payable?",
+            "What is a credit note?"
+          ],
+          "processed_query": "invoice",
+          "preprocessing_steps": {
+            "original": "What is an invoice?",
+            "lowercase": "what is an invoice?",
+            "tokens": [
+              "what",
+              "is",
+              "an",
+              "invoice",
+              "?"
+            ],
+            "meaningful_tokens": [
+              "what",
+              "is",
+              "an",
+              "invoice"
+            ],
+            "tokens_without_stopwords": [
+              "invoice"
+            ],
+            "lemmatized_tokens": [
+              "invoice"
+            ],
+            "processed_text": "invoice"
+          },
+          "keywords": [
+            "invoice"
+          ],
+          "similarity_threshold": 0.5
+        },
+        "timestamp": "10:13 AM"
+      },
+      {
+        "role": "user",
+        "content": "What is the accounting equation?",
+        "timestamp": "10:41 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "The accounting equation is Assets = Liabilities + Equity. It shows that the resources of a business are financed by borrowing, owner investment, or earned profits.",
+        "details": {
+          "response": "The accounting equation is Assets = Liabilities + Equity. It shows that the resources of a business are financed by borrowing, owner investment, or earned profits.",
+          "matched_question": "What is the accounting equation?",
+          "category": "Accounting Fundamentals",
+          "similarity_score": 1.0000000000000002,
+          "is_confident_match": true,
+          "related_questions": [
+            "What is accounting?",
+            "What is owner's equity in accounting?",
+            "What are assets, or things a company owns?"
+          ],
+          "processed_query": "accounting equation",
+          "preprocessing_steps": {
+            "original": "What is the accounting equation?",
+            "lowercase": "what is the accounting equation?",
+            "tokens": [
+              "what",
+              "is",
+              "the",
+              "accounting",
+              "equation",
+              "?"
+            ],
+            "meaningful_tokens": [
+              "what",
+              "is",
+              "the",
+              "accounting",
+              "equation"
+            ],
+            "tokens_without_stopwords": [
+              "accounting",
+              "equation"
+            ],
+            "lemmatized_tokens": [
+              "accounting",
+              "equation"
+            ],
+            "processed_text": "accounting equation"
+          },
+          "keywords": [
+            "accounting",
+            "equation"
+          ],
+          "similarity_threshold": 0.5
+        },
+        "timestamp": "10:41 AM"
       }
     ],
     "created_at": "2026-09-22T09:46:23",
-    "updated_at": "2026-09-22T10:01:39"
+    "updated_at": "2026-09-22T10:41:29"
   },
   {
     "id": "ad1435ed-200b-45c8-b5b1-d696b205cc28",
@@ -260,37 +367,5 @@
     ],
     "created_at": "2026-09-22T08:23:50",
     "updated_at": "2026-09-22T08:36:16"
-  },
-  {
-    "id": "e7f50acf-26f1-488a-aeee-3c96235ea043",
-    "title": "What is ERP?",
-    "messages": [
-      {
-        "role": "assistant",
-        "content": "Hi, I'm FinERP Learning Assistant.\n\nLearn accounting, finance and ERP concepts through simple questions.\n\nAsk me about accounting, finance, bookkeeping, financial statements, business processes, and ERP concepts.",
-        "details": null,
-        "timestamp": "8:17 AM"
-      },
-      {
-        "role": "user",
-        "content": "What is ERP?",
-        "timestamp": "8:18 AM"
-      },
-      {
-        "role": "assistant",
-        "content": "ERP stands for enterprise resource planning. It is software that connects business processes and data in one integrated system.",
-        "details": {
-          "response": "ERP stands for enterprise resource planning. It is software that connects business processes and data in one integrated system.",
-          "matched_question": "What is ERP?",
-          "category": "ERP Fundamentals",
-          "similarity_score": 1.0,
-          "is_confident_match": true,
-          "processed_query": "erp"
-        },
-        "timestamp": "8:18 AM"
-      }
-    ],
-    "created_at": "2026-09-22T08:18:00",
-    "updated_at": "2026-09-22T08:19:28"
   }
 ]
