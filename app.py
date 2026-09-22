@@ -217,16 +217,27 @@ CUSTOM_CSS = """
     }
 
     /* Conversation title rows use the same control radius and align like a chat history. */
-    div[class*="st-key-conversation_"] button {
-        border-radius: var(--finerp-radius) !important;
-        justify-content: flex-start !important;
-        text-align: left !important;
-    }
+    /* Conversation history buttons: always left-align the title. */
+div[class*="st-key-conversation_"] button,
+div[class*="st-key-conversation_new_"] button {
+    border-radius: var(--finerp-radius) !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+}
 
-    div[class*="st-key-conversation_"] button p {
-        width: 100%;
-        text-align: left !important;
-    }
+div[class*="st-key-conversation_"] button > div,
+div[class*="st-key-conversation_new_"] button > div {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+}
+
+div[class*="st-key-conversation_"] button p,
+div[class*="st-key-conversation_new_"] button p {
+    width: 100% !important;
+    margin: 0 !important;
+    text-align: left !important;
+}
 
     div[class*="st-key-related_question_"] button {
         border-radius: var(--finerp-radius) !important;
@@ -651,19 +662,21 @@ def show_match_details(details):
 
 
 def render_related_questions(details, message_index, disabled):
-    """Render up to three related FAQ questions through the normal query pipeline."""
+    """Render related FAQ questions inside a collapsed expandable section."""
     related_questions = details.get("related_questions") or []
+
     if not related_questions:
         return
-    st.caption("Related questions")
-    for related_index, question in enumerate(related_questions):
-        if st.button(
-            question,
-            key=f"related_question_{message_index}_{related_index}",
-            use_container_width=True,
-            disabled=disabled,
-        ):
-            queue_user_query(question)
+
+    with st.expander("Related questions", expanded=False):
+        for related_index, question in enumerate(related_questions):
+            if st.button(
+                question,
+                key=f"related_question_{message_index}_{related_index}",
+                use_container_width=True,
+                disabled=disabled,
+            ):
+                queue_user_query(question)
 
 
 def render_message(message, message_index, show_match_details_enabled):
