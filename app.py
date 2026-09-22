@@ -151,8 +151,37 @@ CUSTOM_CSS = """
 
     div[class*="st-key-new_conversation"] button:hover,
     div[class*="st-key-delete_conversation_"] button:hover {
-        background: transparent;
+        background: #f1f5f9;
         border: 0;
+    }
+
+    /* Do not leave the + / trash controls looking selected after a dialog rerun. */
+    div[class*="st-key-new_conversation"] button:focus,
+    div[class*="st-key-new_conversation"] button:active,
+    div[class*="st-key-delete_conversation_"] button:focus,
+    div[class*="st-key-delete_conversation_"] button:active {
+        outline: none !important;
+        box-shadow: none !important;
+        border: 0 !important;
+    }
+
+    /* Modern delete dialog: compact card, softer corners and shadow. */
+    div[data-testid="stDialog"] div[role="dialog"] {
+        width: min(28rem, calc(100vw - 2rem));
+        border-radius: 1.25rem;
+        border: 1px solid rgba(226, 232, 240, 0.9);
+        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.20);
+    }
+
+    div[data-testid="stDialog"] div[role="dialog"] > div {
+        padding: 0.25rem;
+    }
+
+    /* Blur the page behind the confirmation dialog when supported. */
+    div[data-testid="stDialog"]::backdrop {
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        background: rgba(148, 163, 184, 0.22);
     }
 
     div[class*="st-key-confirm_delete_"] button {
@@ -309,12 +338,20 @@ def switch_conversation(conversation):
 def confirm_delete_conversation(conversation_id):
     """Confirm one local conversation deletion."""
     st.write("Are you sure you want to delete this conversation?")
-    cancel_column, delete_column, _ = st.columns([1.25, 1.25, 3])
+    cancel_column, delete_column, _ = st.columns([1, 1, 4], gap="small")
 
-    if cancel_column.button("Cancel", key=f"cancel_delete_{conversation_id}"):
+    if cancel_column.button(
+        "Cancel",
+        key=f"cancel_delete_{conversation_id}",
+        use_container_width=True,
+    ):
         st.rerun()
 
-    if delete_column.button("Delete", key=f"confirm_delete_{conversation_id}"):
+    if delete_column.button(
+        "Delete",
+        key=f"confirm_delete_{conversation_id}",
+        use_container_width=True,
+    ):
         is_active = conversation_id == st.session_state.active_conversation_id
         st.session_state.conversations = [
             conversation
@@ -618,7 +655,7 @@ with st.sidebar:
     with conversation_heading:
         st.subheader("Conversations")
     with new_conversation_control:
-        if st.button("+", key="new_conversation", help="New conversation"):
+        if st.button("+", key="new_conversation"):
             start_new_conversation()
             st.rerun()
 
@@ -644,7 +681,6 @@ with st.sidebar:
                 if st.button(
                     ":material/delete:",
                     key=f"delete_conversation_{conversation['id']}",
-                    help="Delete conversation",
                 ):
                     confirm_delete_conversation(conversation["id"])
 

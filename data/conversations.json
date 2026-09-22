@@ -162,10 +162,46 @@
           "processed_query": "accounting equation"
         },
         "timestamp": "8:34 AM"
+      },
+      {
+        "role": "user",
+        "content": "What are accounts receivable?",
+        "timestamp": "9:25 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "Accounts receivable are amounts customers owe a company for goods or services already provided on credit.",
+        "details": {
+          "response": "Accounts receivable are amounts customers owe a company for goods or services already provided on credit.",
+          "matched_question": "What are accounts receivable?",
+          "category": "Accounts Receivable and Accounts Payable",
+          "similarity_score": 1.0,
+          "is_confident_match": true,
+          "processed_query": "account receivable"
+        },
+        "timestamp": "9:25 AM"
+      },
+      {
+        "role": "user",
+        "content": "what is account receivable",
+        "timestamp": "9:26 AM"
+      },
+      {
+        "role": "assistant",
+        "content": "Accounts receivable are amounts customers owe a company for goods or services already provided on credit.",
+        "details": {
+          "response": "Accounts receivable are amounts customers owe a company for goods or services already provided on credit.",
+          "matched_question": "What are accounts receivable?",
+          "category": "Accounts Receivable and Accounts Payable",
+          "similarity_score": 1.0,
+          "is_confident_match": true,
+          "processed_query": "account receivable"
+        },
+        "timestamp": "9:26 AM"
       }
     ],
     "created_at": "2026-09-22T08:20:13",
-    "updated_at": "2026-09-22T08:34:14"
+    "updated_at": "2026-09-22T09:26:41"
   },
   {
     "id": "e7f50acf-26f1-488a-aeee-3c96235ea043",
