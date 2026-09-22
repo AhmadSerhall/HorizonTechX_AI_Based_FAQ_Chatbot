@@ -26,42 +26,28 @@
           "processed_query": "account receivable"
         },
         "timestamp": "8:33 AM"
-      }
-    ],
-    "created_at": "2026-09-22T08:33:09",
-    "updated_at": "2026-09-22T08:35:08"
-  },
-  {
-    "id": "45e01407-c4bb-4c89-8952-274021416c9d",
-    "title": "ERP",
-    "messages": [
-      {
-        "role": "assistant",
-        "content": "Hi, I'm FinERP Learning Assistant.\n\nLearn accounting, finance and ERP concepts through simple questions.\n\nAsk me about accounting, finance, bookkeeping, financial statements, business processes, and ERP concepts.",
-        "details": null,
-        "timestamp": "8:31 AM"
       },
       {
         "role": "user",
-        "content": "What is ERP?",
-        "timestamp": "8:31 AM"
+        "content": "What is the difference between revenue and profit?",
+        "timestamp": "8:56 AM"
       },
       {
         "role": "assistant",
-        "content": "ERP stands for enterprise resource planning. It is software that connects business processes and data in one integrated system.",
+        "content": "Revenue is the total income earned from sales before expenses. Profit is what remains after the business subtracts its costs and expenses from revenue.",
         "details": {
-          "response": "ERP stands for enterprise resource planning. It is software that connects business processes and data in one integrated system.",
-          "matched_question": "What is ERP?",
-          "category": "ERP Fundamentals",
+          "response": "Revenue is the total income earned from sales before expenses. Profit is what remains after the business subtracts its costs and expenses from revenue.",
+          "matched_question": "What is the difference between revenue and profit?",
+          "category": "Finance and Business Metrics",
           "similarity_score": 1.0,
           "is_confident_match": true,
-          "processed_query": "erp"
+          "processed_query": "difference revenue profit"
         },
-        "timestamp": "8:31 AM"
+        "timestamp": "8:56 AM"
       }
     ],
-    "created_at": "2026-09-22T08:31:47",
-    "updated_at": "2026-09-22T08:33:03"
+    "created_at": "2026-09-22T08:33:09",
+    "updated_at": "2026-09-22T09:17:56"
   },
   {
     "id": "bbda72da-c514-41d8-974d-6906253099b8",
@@ -93,7 +79,7 @@
       }
     ],
     "created_at": "2026-09-22T08:23:50",
-    "updated_at": "2026-09-22T08:31:30"
+    "updated_at": "2026-09-22T08:36:16"
   },
   {
     "id": "da6d5dde-fdd2-4861-a473-d3a1220679ea",

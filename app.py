@@ -137,6 +137,42 @@ CUSTOM_CSS = """
         from { clip-path: inset(0 100% 0 0); opacity: 0; }
         to { clip-path: inset(0 0 0 0); opacity: 1; }
     }
+
+    div[class*="st-key-new_conversation"] button,
+    div[class*="st-key-delete_conversation_"] button {
+        width: 2.15rem;
+        height: 2.15rem;
+        min-height: 2.15rem;
+        padding: 0;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+    }
+
+    div[class*="st-key-new_conversation"] button:hover,
+    div[class*="st-key-delete_conversation_"] button:hover {
+        background: transparent;
+        border: 0;
+    }
+
+    div[class*="st-key-confirm_delete_"] button {
+        background: #dc2626;
+        border-color: #dc2626;
+        color: #ffffff;
+    }
+
+    div[class*="st-key-confirm_delete_"] button:hover {
+        background: #dc2626;
+        border-color: #dc2626;
+        color: #ffffff;
+    }
+
+    div[class*="st-key-cancel_delete_"] button,
+    div[class*="st-key-confirm_delete_"] button {
+        width: fit-content;
+        min-width: unset;
+        padding: 0.45rem 0.8rem;
+    }
 </style>
 """
 
@@ -145,6 +181,9 @@ TYPING_INDICATOR_HTML = """
     <span></span><span></span><span></span>
 </div>
 """
+
+AI_AVATAR = AI_ICON
+USER_AVATAR = "👤"
 
 
 def current_timestamp():
@@ -244,8 +283,15 @@ def start_new_conversation():
     """Select a fresh local conversation without deleting previous history."""
     save_active_conversation()
     st.session_state.active_conversation_id = str(uuid.uuid4())
-    reset_conversation()
+    st.session_state.messages = []
+    st.session_state.pending_query = None
+    st.session_state.voice_transcript = ""
+    st.session_state.voice_error = ""
+    st.session_state.last_audio_id = None
+    st.session_state.pending_composer_text = ""
+    st.session_state.intro_animated = False
     st.session_state.title_animation_id = None
+    st.session_state.new_chat_pending = True
     st.session_state.scroll_to_latest = True
 
 
@@ -255,12 +301,47 @@ def switch_conversation(conversation):
     st.session_state.messages = list(conversation["messages"])
     st.session_state.pending_query = None
     st.session_state.intro_animated = True
+    st.session_state.new_chat_pending = False
     st.session_state.scroll_to_latest = True
 
 
-def render_scroll_controls(auto_scroll):
+@st.dialog("Delete conversation?")
+def confirm_delete_conversation(conversation_id):
+    """Confirm one local conversation deletion."""
+    st.write("Are you sure you want to delete this conversation?")
+    cancel_column, delete_column, _ = st.columns([1.25, 1.25, 3])
+
+    if cancel_column.button("Cancel", key=f"cancel_delete_{conversation_id}"):
+        st.rerun()
+
+    if delete_column.button("Delete", key=f"confirm_delete_{conversation_id}"):
+        is_active = conversation_id == st.session_state.active_conversation_id
+        st.session_state.conversations = [
+            conversation
+            for conversation in st.session_state.conversations
+            if conversation["id"] != conversation_id
+        ]
+        write_conversations()
+
+        if is_active:
+            st.session_state.active_conversation_id = str(uuid.uuid4())
+            st.session_state.messages = []
+            st.session_state.pending_query = None
+            st.session_state.voice_transcript = ""
+            st.session_state.voice_error = ""
+            st.session_state.last_audio_id = None
+            st.session_state.pending_composer_text = ""
+            st.session_state.intro_animated = False
+            st.session_state.title_animation_id = None
+            st.session_state.new_chat_pending = True
+            st.session_state.scroll_to_latest = True
+
+        st.rerun()
+
+
+def render_scroll_controls(auto_scroll, show_button):
     """Add a small browser-side latest-message anchor and down-arrow control."""
-    st.markdown('<div id="chat-bottom"></div>', unsafe_allow_html=True)
+    st.markdown('<div id="chat-bottom" style="height: 8rem;"></div>', unsafe_allow_html=True)
     components.html(
         f"""
         <script>
@@ -276,13 +357,15 @@ def render_scroll_controls(auto_scroll):
             button.textContent = "↓";
             button.title = "Scroll to latest message";
             button.setAttribute("aria-label", "Scroll to latest message");
-            button.style.cssText = "position:fixed;right:1.5rem;bottom:5.75rem;z-index:1000;display:none;width:2rem;height:2rem;border:1px solid #cbd5e1;border-radius:50%;background:#ffffff;color:#475569;font-size:1.1rem;cursor:pointer;box-shadow:0 3px 10px rgba(15,23,42,.12);";
+            button.style.cssText = "position:fixed;right:max(1rem, calc(50% - 37.5rem));bottom:8.75rem;z-index:1000;display:none;width:2rem;height:2rem;border:1px solid #cbd5e1;border-radius:50%;background:#ffffff;color:#475569;font-size:1.1rem;cursor:pointer;box-shadow:0 3px 10px rgba(15,23,42,.12);";
             parentDocument.body.appendChild(button);
         }}
 
+        button.style.right = "max(1rem, calc(50% - 37.5rem))";
+        button.style.bottom = "8.75rem";
+
         const updateButton = () => {{
-            const distanceFromBottom = parentDocument.documentElement.scrollHeight - parentWindow.innerHeight - parentWindow.scrollY;
-            button.style.display = distanceFromBottom > 140 ? "flex" : "none";
+            button.style.display = {str(show_button).lower()} ? "flex" : "none";
             button.style.alignItems = "center";
             button.style.justifyContent = "center";
         }};
@@ -413,7 +496,7 @@ def show_match_details(details):
 
 def render_message(message, message_index, show_match_details_enabled):
     """Render one chat bubble with optional timestamp and debug details."""
-    avatar = AI_ICON if message["role"] == "assistant" else "👤"
+    avatar = AI_AVATAR if message["role"] == "assistant" else USER_AVATAR
     with st.chat_message(message["role"], avatar=avatar):
         st.markdown(message["content"])
         timestamp = message.get("timestamp")
@@ -446,7 +529,7 @@ def render_suggested_questions(disabled, key_prefix):
 def render_welcome_message(show_match_details_enabled):
     """Show the first assistant message with a one-time typewriter effect."""
     welcome_message = st.session_state.messages[0]
-    with st.chat_message("assistant", avatar=AI_ICON):
+    with st.chat_message("assistant", avatar=AI_AVATAR):
         if not st.session_state.intro_animated:
             message_placeholder = st.empty()
             typed_text = ""
@@ -500,9 +583,14 @@ for state_key, default_value in (
     ("pending_composer_text", ""),
     ("scroll_to_latest", False),
     ("title_animation_id", None),
+    ("new_chat_pending", False),
 ):
     if state_key not in st.session_state:
         st.session_state[state_key] = default_value
+
+if st.session_state.new_chat_pending:
+    reset_conversation()
+    st.session_state.new_chat_pending = False
 
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
@@ -526,7 +614,7 @@ with st.sidebar:
         help="Optional NLP demo view: matched FAQ, category, similarity score, and processed query.",
     )
 
-    conversation_heading, new_conversation_control = st.columns([5, 1])
+    conversation_heading, new_conversation_control = st.columns([6, 1])
     with conversation_heading:
         st.subheader("Conversations")
     with new_conversation_control:
@@ -539,17 +627,26 @@ with st.sidebar:
             is_new_title = (
                 conversation["id"] == st.session_state.title_animation_id
             )
-            if st.button(
-                conversation["title"],
-                key=(
-                    f"conversation_new_{conversation['id']}"
-                    if is_new_title
-                    else f"conversation_{conversation['id']}"
-                ),
-                use_container_width=True,
-            ):
-                switch_conversation(conversation)
-                st.rerun()
+            title_column, delete_column = st.columns([6, 1])
+            with title_column:
+                if st.button(
+                    conversation["title"],
+                    key=(
+                        f"conversation_new_{conversation['id']}"
+                        if is_new_title
+                        else f"conversation_{conversation['id']}"
+                    ),
+                    use_container_width=True,
+                ):
+                    switch_conversation(conversation)
+                    st.rerun()
+            with delete_column:
+                if st.button(
+                    ":material/delete:",
+                    key=f"delete_conversation_{conversation['id']}",
+                    help="Delete conversation",
+                ):
+                    confirm_delete_conversation(conversation["id"])
 
             if is_new_title:
                 st.session_state.title_animation_id = None
@@ -564,10 +661,13 @@ else:
         render_message(message, index, show_match_details_enabled)
 
 if is_waiting_for_answer:
-    with st.chat_message("assistant", avatar=AI_ICON):
+    with st.chat_message("assistant", avatar=AI_AVATAR):
         st.markdown(TYPING_INDICATOR_HTML, unsafe_allow_html=True)
 
-render_scroll_controls(st.session_state.scroll_to_latest)
+render_scroll_controls(
+    st.session_state.scroll_to_latest,
+    not is_welcome_only_chat(),
+)
 st.session_state.scroll_to_latest = False
 
 if st.session_state.voice_error:
